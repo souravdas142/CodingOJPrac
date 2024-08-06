@@ -2,145 +2,165 @@
 using namespace std;
 #define newln "\n"
 
-class node {
+class ListNode {
     public:
-        int x;
-        node* nxt = nullptr;
-        node(int param,node* ptr):x(param), nxt(ptr) {}
-        node(node* ptr):nxt(ptr) {}
-        node() {}
+        int value;
+        ListNode* next;
+        ListNode(int param,ListNode* ptr):value(param), next(ptr) {}
+        ListNode(int param):value(param) {}
+        ListNode(ListNode* ptr):next(ptr) {}
+        ListNode():value(0),next(nullptr) {}
+
+        static ListNode* convert2ll(const vector<int>& arr) {
+            int cnt = 0;
+            ListNode* prev = nullptr;
+            ListNode* head = nullptr;
+            for(int a:arr) {
+                cnt++;
+                ListNode *tmp = new ListNode(a);
+                if(cnt == 1) {
+                    head = tmp;
+                }
+                if(cnt>1) {
+                    prev->next = tmp;
+                }
+                prev = tmp;
+            }
+            return head;
+        }
+
+        static void print(ListNode* head) {
+            ListNode *tmp = head;
+            cout<<newln;
+            while(tmp!=nullptr) {
+                cout<<tmp->value<<" ";
+                tmp=tmp->next;
+            }
+            cout<<newln;
+        }
+        
+        static ListNode* deleteNodeByPos(ListNode* head, int pos) {
+           //if there is no node 
+            if(head==nullptr) return head;
+            // if first Node
+            if(pos == 1) {
+                ListNode* tmp = head;
+                head=head->next;
+                delete tmp;
+                return head;
+
+            }
+            
+            ListNode *tmp = head, *prev = nullptr;
+
+            int cnt = 0;
+            while(tmp!=nullptr) {
+
+                cnt++;
+                if(cnt==pos) {
+                    
+                    prev->next = prev->next->next;
+                    delete tmp;
+                    return head;
+
+                }
+                prev = tmp;
+                tmp=tmp->next;
+            }
+            
+            return head;
+            
+            
+        }
+        static ListNode* deleteNodeByVal(ListNode* head, int val) {
+           //if there is no node 
+            if(head==nullptr) return head;
+            // if first Node
+            if(head->value == val) {
+                ListNode* tmp = head;
+                head=head->next;
+                delete tmp;
+                return head;
+
+            }
+            
+            ListNode *tmp = head, *prev = nullptr;
+
+            while(tmp!=nullptr) {
+
+                if(tmp->value==val) {
+                    
+                    prev->next = prev->next->next;
+                    delete tmp;
+                    return head;
+
+                }
+                prev = tmp;
+                tmp=tmp->next;
+            }
+            
+            return head;
+            
+            
+        }
+        
+        static ListNode* insertNode(ListNode* head,int pos, int val) {
+            
+            
+            if(pos==1 || head==nullptr) {
+                ListNode* tmp = new ListNode(val,head);
+                return tmp;
+            }
+            
+            ListNode *tmp = head, *prev = nullptr;
+            int cnt  = 0;
+            
+            while(tmp!=nullptr) {
+                cnt++;
+                if(cnt==pos-1) {
+                    ListNode *nd = new ListNode(val,tmp->next);
+                    tmp->next= nd;
+                    return head;
+                }
+                prev = tmp;
+                tmp=tmp->next;
+            }
+
+            return head;
+            
+        }
+        
+        static ListNode* reversell(ListNode* head) {
+
+            ListNode *prev = nullptr, *cur = head;
+
+            while(cur!=nullptr) {
+                ListNode* tmp = cur->next;
+                cur->next = prev;
+                prev = cur;
+                cur = tmp;
+
+            }
+            head = prev;
+            return head;
+        }
 
 };
 
-void push_back(node** nd,int data) {
 
-    node* tmp = new node(data,nullptr);
-    if(!(*nd)) {
-        *nd = tmp;
-        return;
-    }
-    node* iter = *nd;
-    while(iter->nxt) {
-        iter = iter->nxt;
-    }
-    iter->nxt = tmp;
-    
-}
 
-void push_front(node** nd,int data) {
-    node* tmp = new node(data,*nd);
-    *nd = tmp;
+int main() {
 
-}
 
-void insert(node** head, int data, int pos) {
-    
-    if(!(*head)) {
-       return; 
-    }
-    node* iter = *head;
-    node* prev = nullptr;
-    int count = 0;
-    while(iter->nxt) {
-        prev = iter;
-        iter = iter->nxt;
-        count++;
-        if(count==pos) {
-
-            node* tmp = new node(data,iter->nxt);
-            prev->nxt = tmp;
-            break;
-        }
-        
-    }
-    if(count!=pos) {
-        cout<<pos<<" not available "<<endl;
-        return;
-    }
-    
-}
-
-void print(node* head) {
-    node *tmp = head;
-    while(tmp!=nullptr) {
-        cout<<tmp->x<<" ";
-        tmp = tmp->nxt;
-    }
-    cout<<endl;
-}
-
-void usage() {
-    cout<<newln<<"press 0  for print"<<newln;
-    cout<<"press 1 for push_back"<<newln;
-    cout<<"press 2 for push_front"<<newln;
-    cout<<"press 3 for insert"<<newln;
-    cout<<"press 4 for pop_back"<<newln;
-    cout<<"press 5 for pop_front"<<newln;
-    cout<<"press 6 for delete"<<newln<<newln;
-}
-
-int main () {
-    node* head = nullptr;
-    node *iter = head;
-    int size;
-    cin>>size;
-    while(size--) {
-        
-        int x; cin>>x;
-        node* tmp = new node(x,nullptr);
-        if (!head){ 
-            head = tmp;
-            iter = tmp;
-        } else {
-            iter->nxt=tmp;
-            iter = iter->nxt;
-        }
-
-        
-    }
-    print(head);
-    
-    int data,pos;
-    do {
-        usage();
-        cout<<"Do you want to do something? : ";
-        int option; cin>>option;
-        switch(option) {
-            case 1:
-                cout<<"Enter data: ";
-                cin>>data;
-                push_back(&head,data);
-                break;
-                
-            case 2:
-                cout<<"Enter data: ";
-                cin>>data;
-                push_front(&head,data);
-                break;
-            case 3:
-                cout<<"Enter data & Pos: ";
-                cin>>data>>pos;
-
-                insert(&head,data,pos);
-                break;
-            //case 4:
-            //    pop_back();
-            //    break;
-            //case 5:
-            //    pop_front();
-            //    break;
-            //case 6:
-            //    delete();
-            //    break;
-            case 0:
-                print(head);
-                break;
-            default:
-                usage();
-                break;
-            
-        }
-    } while(true);
-
+    vector<int> arr = {3,2,6,4,5};
+    ListNode* head = ListNode::convert2ll(arr);
+    ListNode::print(head);
+    //ListNode *dHead = ListNode::deleteNodeByPos(head,6);
+    //ListNode *dHead = ListNode::deleteNodeByVal(head,5);
+    ListNode *iHead = ListNode::insertNode(head,4,5);
+    ListNode::print(iHead);
+    ListNode *hd = ListNode::reversell(iHead);
+    ListNode::print(hd);
     return 0;
+
 }
