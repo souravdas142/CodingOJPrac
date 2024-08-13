@@ -15,14 +15,18 @@ class Solution {
 public:
     bool validPath(int n, vector<vector<int>>& edges, int src, int dest) {
 
+        bool ans = false;
         vector<vector<int> > adj(n);
-        for(int u = 0;u<n;u++) {
+        vector<bool> visited(n,false);
+
+        int sz = edges.size();
+        
+        for(int u = 0;u<sz;u++) {
             
             adj[edges[u][0]].push_back(edges[u][1]);
             adj[edges[u][1]].push_back(edges[u][0]);
             
         }
-        vector<bool> visited(n,false);
         
         
         runDfs(adj,dest,src,visited,ans);
