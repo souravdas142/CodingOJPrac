@@ -37,6 +37,7 @@ public:
 
         if(nums.size() == 1 && nums[0]==target) return {0,0};
         int lbv = lb(nums,target);
+        if (lbv==-1) return {-1,-1};
         int upv = up(nums,target);
 
         return {lbv,upv};
