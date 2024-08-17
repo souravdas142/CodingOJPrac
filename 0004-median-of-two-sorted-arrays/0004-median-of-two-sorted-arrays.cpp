@@ -1,49 +1,43 @@
-#define vi vector<int>
 class Solution {
-    double solve(vi& nums1,vi& nums2,int n,int m,int mn) {
-        
-        int mid = mn/2;
-        
-        int cnt = 0;
-        int i = 0,j = 0;
-        int cur = 0, prevCur = 0;
-        double ans = 0.0;
-
-        while(cnt<=mid) {
-            prevCur = cur;
-            if(i<n && j<m) {
-                if(nums1[i]>nums2[j]) {
-                    cur = nums2[j++];
-
-                }
-                else {
-                    cur = nums1[i++];
-                }
-            }
-            else if(i<n) {
-                cur = nums1[i++];
-            }
-            else if(j<m) {
-                cur = nums2[j++];
-            }
-            cnt++;
-        }
-
-        if(mn&1) return cur;
-        else {
-             ans = (cur+prevCur)/2.0;
-        
-        }
-        return (double)ans;
-    }
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-
-        int sz1 = nums1.size();
-        int sz2 = nums2.size();
-        int sz = sz1+sz2;
-        double ans =  solve(nums1,nums2,sz1,sz2,sz);
-        return ans;
         
+        int n1=nums1.size();
+        int n2 = nums2.size();
+
+        if(n2>n1) {
+            return findMedianSortedArrays(nums2,nums1);
+        }
+
+        int n = n1+n2;
+        int left = (n+1)/2;
+        int low = 0, high = n1;
+
+        while(low<=high) {
+
+            int mid1 = (high+low)/2;
+            int mid2 = left-mid1;
+            int l1 = (mid1>0)?nums1[mid1-1]:INT_MIN, r1 = (mid1<n1)?nums1[mid1]:INT_MAX;
+            int l2 = (mid2>0)?nums2[mid2-1]:INT_MIN, r2 = (mid2<n2)?nums2[mid2]:INT_MAX;
+            
+            if(l1<=r2 && l2<=r1) {
+
+                if(n&1) {
+                    return (max(l1,l2))/1.0;
+                }
+                else {
+                    return (max(l1,l2)+min(r1,r2))/2.0;
+                }
+
+            }
+            else if(l1>r2) {
+                high = mid1-1;
+            }
+            else if(l2>r1) {
+                low = mid1+1;
+            }
+        }
+
+        return 0.0;
     }
 };
