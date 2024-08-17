@@ -1,29 +1,26 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-
-        unordered_map<int,int> ump;
-        int sz = nums.size();
-        int i = 0;
-        int ans = 0;
-        while(i<sz) {
-
-            ump[nums[i]]++;
-
-
-            i++;
-        }
-        i = 0;
-        while(i<sz) {
-            if(ump[nums[i]]>1) {
-                ans = nums[i];
-                break;
+       int sz = nums.size();
+       
+       // binary search on ans
+       int low = 1,high = sz-1;
+       while(low<high) {
+            int mid = low+(high-low)/2;
+           
+            int cnt = 0;
+            for(int num:nums) {
+                if(num<=mid) cnt++;
             }
+            if(cnt>mid) {
+                high = mid;
+            }
+            else {
+                low = mid+1;
+            }
+       } 
 
-
-            i++;
-        }
-        return ans;
-        
+       cout<<high<<" "<<low<<endl;
+       return low;
     }
 };
