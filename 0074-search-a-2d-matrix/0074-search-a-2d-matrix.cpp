@@ -32,6 +32,7 @@ public:
             
             
         }
+        if(target<matrix[0][0]) return false;
         rpos = upb-1;
         int low = 0,high = col-1;
         while(low<=high) {
