@@ -28,7 +28,7 @@ public:
                 
                 }
             }
-            maxPrefix = max(maxPrefix,ft[i]);
+            
         }
         
         cout<<endl;
@@ -38,7 +38,7 @@ public:
         cout<<endl;
         
 
-        return string(pat.begin(),pat.begin()+maxPrefix);
+        return string(pat.begin(),pat.begin()+ft[len]);
         
     }
 };
