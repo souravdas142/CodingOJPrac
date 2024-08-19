@@ -17,7 +17,7 @@ public:
         string ans;
         for(int i = 0;i<len;i++) {
             for(int j= i;j<len;j++) {
-                if(checkPalindrome(s,i,j)) {
+                if(s[i]==s[j] && checkPalindrome(s,i,j)) {
                     if(j-i+1 > maxlen) {
                         maxlen = j-i+1;
                         ans = string(s.begin()+i,s.begin()+j+1);
