@@ -1,31 +1,44 @@
 class Solution {
-    bool checkPalindrome(string& s,int i, int j) {
-        while(i<=j) {
-            if(s[i]!=s[j]) {
-                return false;
-                
-            }
-            i++;j--;
+
+    int expand(string s,int len, int left,int right,string& pans) {
+
+        int ans = 0;
+        
+        while(right<len && left>=0) {
+            if(s[left]!=s[right]) break;
+            right++;left--;
         }
-        return true;
+        ans =  (right-left-1);
+        pans = string(s.begin()+left+1,s.begin()+right);
+        return ans;
     }
 public:
     string longestPalindrome(string s) {
 
         int len = s.length();
-        int maxlen = 0;
+        if(len==1) return s;
+        int i = 0;
+        int maxlen = 1;
         string ans;
-        for(int i = 0;i<len;i++) {
-            for(int j= i;j<len;j++) {
-                if(s[i]==s[j] && checkPalindrome(s,i,j)) {
-                    if(j-i+1 > maxlen) {
-                        maxlen = j-i+1;
-                        ans = string(s.begin()+i,s.begin()+j+1);
-                    }
-                }
 
+        while(i<len) {
+            // odd
+            string oans,eans;
+            int odd = expand(s,len,i,i,oans);
+            int even = expand(s,len,i,i+1,eans);
+
+            int flen = max(odd,even);
+
+            if(flen>maxlen) {
+                maxlen = flen;
+                ans = (flen&1)?oans:eans;
+                
             }
+
+            i++;
         }
+
+
         return ans;
         
     }
