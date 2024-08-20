@@ -38,27 +38,20 @@ struct Node
 */
 
 class Solution {
-  private:
-    struct Node* reverselink(struct Node* head,struct Node* prev) {
-        if(head->next == NULL) {
-            head->next = prev;
-            return head;
-        }
-        struct Node* next = head->next;
-        head->next = prev;
-        prev = head;
-        return reverselink(next,prev);
-        
-    }
   public:
     // Function to reverse a linked list.
     struct Node* reverseList(struct Node* head) {
         // code here
         // return head of reversed list
         struct Node* prev = NULL;
-        struct Node* newHead = reverselink(head,prev);
-        return newHead;
-        
+        while(head->next) {
+            struct Node* tmp = head->next;
+            head->next = prev;
+            prev = head;
+            head = tmp;
+        }
+        head->next = prev;
+        return head;
     }
 };
 
