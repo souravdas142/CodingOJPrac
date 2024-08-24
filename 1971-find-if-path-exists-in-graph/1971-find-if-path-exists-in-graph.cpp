@@ -1,35 +1,47 @@
-class Solution {
+#define vvi vector<vector<int> >
+#define vb vector<bool> 
 
-    void runDfs(vector<vector<int> >& adj, int dest,int node, vector<bool>& visited,bool& ans) {
-        visited[node] = true;
-        if(node==dest) {
-            ans = true;
-            return;
+class Solution {
+private:
+    bool bfs(vvi& adjlist,vb& visited,int source, int destination) {
+        visited[source] = true;
+        deque<int> dq;
+        dq.push_back(source);
+
+        while(!dq.empty()) {
+            int u = dq.front();
+            dq.pop_front();
+
+            for(int v:adjlist[u]) {
+                if(!visited[v]) {
+                    visited[v] = true;
+                    dq.push_back(v);
+                    if(v == destination) return true;
+                }
+            }
+
         }
-        int sz = adj[node].size();
-        for(int v = 0;v<sz;v++) {
-            if(visited[adj[node][v]]==false)
-                runDfs(adj,dest,adj[node][v],visited,ans);
-        }
+        return false;
     }
 public:
-    bool validPath(int n, vector<vector<int>>& edges, int src, int dest) {
-
-        bool ans = false;
-        vector<vector<int> > adj(n);
-        vector<bool> visited(n,false);
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
 
         int sz = edges.size();
-        
-        for(int u = 0;u<sz;u++) {
-            
-            adj[edges[u][0]].push_back(edges[u][1]);
-            adj[edges[u][1]].push_back(edges[u][0]);
-            
+        if(sz==0) return true;
+
+        if(source==destination) return true;
+
+        vector<vector<int> > adjlist(n);
+
+
+
+        for(int i = 0;i<sz;i++) {
+            adjlist[edges[i][0]].push_back(edges[i][1]);
         }
+
+        vector<bool> visited(n,false);
+
+        return bfs(adjlist,visited,source,destination);
         
-        
-        runDfs(adj,dest,src,visited,ans);
-        return ans;
     }
 };
