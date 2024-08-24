@@ -4,41 +4,56 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
+    vector<int> bfs(int starting,vector<vector<int> >& adjlist,int v,vector<bool>& visited) {
+        
+        deque<int> dq;
+        dq.push_back(starting);
+        visited[starting] = true;
+        vector<int> bfsans;
+        
+        while(!dq.empty()) {
+            int u = dq.front();
+            dq.pop_front();
+            
+            bfsans.push_back(u);
+            
+            
+            for(int v:adjlist[u]) {
+                if(visited[v]!=true) {
+                    dq.push_back(v);
+                    visited[v] = true;
+                }
+            }
+        }
+        
+        return bfsans;
+        
+    }
   public:
     // Function to return Breadth First Traversal of given graph.
     vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         // Code here
-        /*
-       int sz = sizeof(adj);
-       cout<<sz<<endl;
-       for(int u = 0;u<sz;u++) {
-           cout<<u<<"->";
-           for(int v = 0;v<adj[u].size();v++) {
-               cout<<adj[u][v]<<" ";
-           }
-           cout<<endl;
-       }
-       */
         
-        deque<int> bfs;
-        vector<int> bfsans;
-        vector<bool> visited(V,false);
-        visited[0] = true;
-        bfs.push_back(0);
-        //bfsans.push_back(0);
-        while(!bfs.empty()) {
-            int u = bfs.front();
-            bfs.pop_front();
-            bfsans.push_back(u);
-            for(int v:adj[u]) {
-                if(visited[v]==false) {
-                    bfs.push_back(v);
-                    visited[v] = true;
-                    
-                }
+        vector<vector<int> > adjlist(V);
+       
+        for(int u = 0;u<V;u++) {
+            for(auto v:adj[u]) {
+                adjlist[u].push_back(v);
+                
+                
             }
         }
+        
+        vector<bool> visited(V,false);
+        int starting = 0;
+  
+                
+        vector<int> bfsans = bfs(starting,adjlist,V,visited);
         return bfsans;
+                
+          
+        
+        
     }
 };
 
