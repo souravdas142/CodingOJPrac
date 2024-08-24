@@ -1,73 +1,84 @@
+
+#define vvb vector<vector<bool> >
+#define vb vector<bool>
 #define vvi vector<vector<int> >
-#define vvi vector<vector<int> >
+#define vi vector<int>
+
 
 class Node {
+
     public:
-        int x;
-        int y;
+        int row;
+        int col;
         int dist;
-        Node(int xa,int ya,int da):x(xa),y(ya),dist(da) {}
-    
+
+        Node(int x,int y, int d=0): row(x),col(y),dist(d) {}
+
 };
+
+vector<int> dx = {0,0,-1,1};
+vector<int> dy = {1,-1,0,0};
+
+bool checkPossible(int m,int n,Node& v,vvb& visited,vvi& grid) {
+
+    int x = v.row;
+    int y = v.col;
+
+    if(x>=0 && y>=0 && x<m && y<m && grid[x][y]==1 && !visited[x][y]) return true;
+    return false;
+
+}
 
 class Solution {
 
-
-private:
-    bool check(vvi& grid,vvi& visited,int i, int j,int n,int m) {
-        if(i>=0 && j>=0 && i<n && j<m && grid[i][j]==1 && visited[i][j]!=2) return true;
-        return false;
-    }
-
-
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        vector<int> dx = {1,0,0,-1};
-        vector<int> dy = {0,1,-1,0};
-        int n = grid.size();
-        int m = grid[0].size();
-        vvi visited(n,vector<int>(m,0));
-        int ans = 0;
-        
-        int totalCells = n*m;
+
         deque<Node> dq;
-        for(int i = 0;i<n;i++) {
-            for(int j = 0;j<m;j++) {
+
+        int m = grid.size();
+        int n = grid[0].size();
+
+        int freshcnt = 0;
+        vvb visited(m,vb(n,false));
+
+        for(int i = 0;i<m;i++) {
+            for(int j = 0;j<n;j++) {
                 if(grid[i][j]==2) {
-                    dq.push_back(Node({i,j,0}));
-                    visited[i][j] = 2;
-                    
-                    
+                    dq.push_back(Node(i,j,0));
+                    visited[i][j] = true;
                 }
-                if(grid[i][j]==0) totalCells--;
+                else if(grid[i][j]==1) {
+                    freshcnt ++;
+                }
             }
         }
-      
+        int mx = 0;
+
+
+
+
         while(!dq.empty()) {
-            Node nd = dq.front();
+            Node u = dq.front();
             dq.pop_front();
-            bool flag = false;
-            totalCells--;
-            ans = max(ans,nd.dist);
-            for(int k = 0;k<4;k++) {
-                int newx = nd.x+dx[k];
-                int newy = nd.y+dy[k];
-                if(check(grid,visited,newx,newy,n,m)) {
-                    visited[newx][newy] = 2;
-                    dq.push_back(Node({newx,newy,nd.dist+1}));
-                    
-                    flag = true;
+
+            for(int i = 0;i<4;i++) {
+                Node v(u.row+dx[i],u.col+dy[i],u.dist+1);
+                
+
+                if(checkPossible(m,n,v,visited,grid)) {
+                    freshcnt--;
+                    dq.push_back(v);
+                    visited[v.row][v.col] = true;
+                    mx = max(mx,v.dist);
                 }
             }
-          
+
+
         }
 
-        
-        cout<<ans<<" "<<totalCells<<endl;
-        if(totalCells==0)
-            return ans;
-        
-        return -1;
+        if(freshcnt>0) return -1;
+        return mx;
         
     }
 };
