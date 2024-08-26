@@ -3,76 +3,40 @@
 using namespace std;
 
 // } Driver Code Ends
-
-#define vvi vector<vector<int> >
-#define vvb vector<vector<bool> >
-#define vi vector<int>
-#define vb vector<bool>
-
-#define pi pair<int,int> 
-
 class Solution {
-  private:
-  
-  //bool detectCycle(vvi& adjlist,vb& visited, int src) {
-  bool detectCycle(vector<int> adjlist[],bool visited[], int src) {
-      
-      deque<pi> dq;
-      dq.push_back({src,-1}); // we don't know the parent of src so -1
-      visited[src] = true;
-      
-      while(!dq.empty()) {
-          pi pr = dq.front();
-          dq.pop_front();
-          int parent = pr.second;
-          int u = pr.first;
-          
-          for(auto v:adjlist[u]) {
-              
-              
-              if(!visited[v]) {
-                  visited[v] = true;
-                  dq.push_back({v,u});
-              }
-              else if(v!=parent) {
-                  return true;
-              }
-          }
-          
-          
-        }
-      
-      return false;
-      
-      
-      
-  }
-
-  public:
-    // Function to detect cycle in an undirected graph.
-    bool isCycle(int V, vector<int> adj[]) {
-        // Code here
-       /* vvi adjlist(V);
-        int sz = adj->size();
+    bool dfs(vector<int> adj[],vector<bool>& visited,int u,int parent) {
         
-        cout<<sz<<endl;
+        visited[u] = true;
         
-        for(int i = 0;i<sz;i++) {
-            adjlist[i] = adj[i];
-        }
-        */
-        bool visited[V] = {false};
-        
-        for(int i = 0;i<V;i++) {
-            if(!visited[i]) {
-                //bool checkCycle = detectCycle(adjlist,visited,i);
-                bool checkCycle = detectCycle(adj,visited,i);
-                if(checkCycle) return true;
+        for(auto v:adj[u]) {
+            if(!visited[v]) {
+                if(dfs(adj,visited,v,u)==true)
+                    return true;
+                
+            }
+            else if(v!=parent) {
+                return true;
             }
         }
         
         return false;
         
+    }
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        
+        
+        vector<bool> visited(V,false);
+        
+        for(int i = 0;i<V;i++) {
+            if(!visited[i]) {
+                if(dfs(adj,visited,i,-1)) return true;
+            }
+        }
+        // Code here
+        
+        return false;
     }
 };
 
