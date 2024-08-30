@@ -13,42 +13,40 @@ class Solution {
     // Function to find if there is a celebrity in the party or not.
     int celebrity(vector<vector<int> >& mat) {
         // code here
-        int ans = 0;
-        
-        int r = mat.size();
-        int c = mat[0].size();
-        for(int i = 0;i<r;i++) {
-            bool flag = false;
-            for(int j = 0;j<c;j++) {
-                if(mat[i][j]==1) {
-                    flag = true;
-                }
+        int n = mat.size();
+        int i = 0;
+        int j = n-1;
+        while(i<j) {
+            
+            if(mat[i][j]==1) {
+                // i knows j so it will not be a celibrity
+                i++;
             }
-            if(flag == false) {
-                ans = i;
-                break;
+            else if(mat[j][i]==1) {
+                /// j knows i, si it will not be a celibrity
+                j--;
             }
+            else {
+                i++;
+                j--;
+            }
+            
         }
         
-                // possible but still not sure??
-                /*  see below test case
-                
-                    1 1 0 1 1
-                    1 1 0 1 1
-                    0 0 0 0 0
-                    1 1 0 1 1
-                    1 1 0 1 1
-                
-                    so we have to also check all persion know this also
-                */
-               
-                for(int i = 0;i<r;i++) {
-                    if(i==ans) continue;
-                    if(mat[i][ans]!=1) return -1;
-                }
-            
+        if(i!=j) {
+            return -1;
+        }
         
-        return ans;
+        
+        
+        for(int k = 0;k<n;k++) {
+            if(k==i) continue;
+            if(mat[i][k]!=0) return -1;
+            if(mat[k][i]!=1) return -1;
+        }
+        
+        return i;
+        
     }
 };
 
