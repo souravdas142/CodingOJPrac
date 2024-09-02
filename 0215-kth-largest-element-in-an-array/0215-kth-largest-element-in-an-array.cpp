@@ -8,11 +8,11 @@ public:
         }
         int n = nums.size();
         for(int i = k;i<n;i++) {
-           // if(nums[i]<pq.top()) {
+            if(nums[i]>pq.top()) {
                 
-                pq.push(nums[i]);
                 pq.pop();
-            //}
+                pq.push(nums[i]);
+            }
         }
 
         return pq.top();
