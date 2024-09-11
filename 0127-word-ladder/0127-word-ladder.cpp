@@ -1,3 +1,5 @@
+#define fio ios_base::sync_with_stdio(false); cin.tie(nullptr);
+
 class Solution {
 
 private:
@@ -6,23 +8,18 @@ private:
         int len = word1.length();
         int cnt = 0;
         while(ptr<len) {
-
-            if(word1[ptr]==word2[ptr]) {
+            if(word1[ptr]==word2[ptr]) 
                 cnt++;
-            }
-
             ptr++;
         }
-
         if(len-cnt==1) return true;
         return false;
     }
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-
+        fio;
         /// create the graph
         int n = wordList.size();
-       // if(wordList[n-1]!=endWord) return 0;
         unordered_map<string,vector<string> > graph;
 
         for(int i = 0;i<n;i++) {
@@ -43,11 +40,8 @@ public:
         }
 
         queue<pair<string,int> > que;
-
         unordered_map<string,bool> visited;
-
         que.push({beginWord,1});
-
         visited[beginWord] = true;
 
         while(!que.empty()) {
@@ -59,13 +53,11 @@ public:
                     visited[str] = true;
                     int dst = node.second+1;
                     que.push({str,dst});
-                    
                 }
             }
         }
 
         return 0;
 
-        
     }
 };
