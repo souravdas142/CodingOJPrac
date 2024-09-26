@@ -12,7 +12,7 @@ public:
             maxfreq = max(maxfreq,ump[s[j]]);
 
             
-            while((j-i-maxfreq+1)>k) {
+            if((j-i-maxfreq+1)>k) {
                 ump[s[i]]--;
                 int updfreq = 0;
                 for(auto pr:ump) {
