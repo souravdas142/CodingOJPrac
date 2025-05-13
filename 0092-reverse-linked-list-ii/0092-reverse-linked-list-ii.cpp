@@ -12,36 +12,23 @@ class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int left, int right) {
 
-        if(head==nullptr || head->next == nullptr || left==right ) return head;
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* pre = dummy;
 
-        ListNode* leftnd = head, *preleft=nullptr;
-        int cnt = 0;
-        while(leftnd!=nullptr) {
-            cnt++;
-            if(left==cnt)break;
-            preleft = leftnd;
-            leftnd=leftnd->next;
+        for(int i = 0;i<left-1;i++) {
+            pre = pre->next;
         }
-        cout<<"count = "<<cnt<<"leftnd = "<<leftnd->val<<endl;
+        ListNode* cur = pre->next;
+        for(int i = 0;i<right-left;i++) {
+            ListNode* tmp = pre->next;
+            pre->next = cur->next;
+            cur->next = cur->next->next;
 
-        ListNode *cur = leftnd;
-        ListNode *prev = nullptr;
-        while(cur!=nullptr) {
-            ListNode *bak = cur->next;
-            cur->next = prev;
-            prev = cur;
-            cur = bak;
-            if(cnt==right) break;
-            cnt++;
+            pre->next->next = tmp;
         }
-        leftnd->next = cur;
-        if(preleft!=nullptr && cur==nullptr) preleft->next = prev;
-        else if(preleft!=nullptr) preleft->next = prev;
-        else if(cur == nullptr) head = prev;
-        else if(preleft==nullptr) head = prev;
 
-        return head;
-
+        return dummy->next;
         
     }
 };
