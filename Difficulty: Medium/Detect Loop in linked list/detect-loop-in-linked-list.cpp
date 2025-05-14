@@ -24,6 +24,7 @@ void loopHere(Node* head, Node* tail, int position) {
 
 
 // } Driver Code Ends
+
 // User function template for C++
 
 /*
@@ -43,18 +44,22 @@ class Solution {
     // Function to check if the linked list has a loop.
     bool detectLoop(Node* head) {
         // your code here
-        Node *fast = head->next;
-        Node *slow = head;
-        while(fast && fast->next) {
+        
+        Node* fast = head;
+        Node* slow = head;
+        
+        while(fast!=nullptr &&  fast->next!=nullptr ) {
+            
             fast = fast->next->next;
             slow = slow->next;
-            if(fast==slow) {
-                return true;
-            }
+            if(fast==slow) return true;
         }
+        
         return false;
+        
     }
 };
+
 
 
 //{ Driver Code Starts.
