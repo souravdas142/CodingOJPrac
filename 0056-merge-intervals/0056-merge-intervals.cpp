@@ -1,32 +1,34 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-
-        sort(intervals.begin(),intervals.end());
-        int pstart = intervals[0][0];
-        int pend = intervals[0][1];
-        int i = 0,j = 1;
-        int sz = intervals.size();
+        int n = intervals.size();
         vector<vector<int> > ans;
-        while(j<sz) {
-            int start = intervals[j][0];
-            int end = intervals[j][1];
-            if(start<=pend) {
-                pend = max(end,pend);
-            }
-            else {
-                ans.push_back({pstart,pend});
-                pstart = start;
-                pend = end;
+        
+        sort(intervals.begin(),intervals.end());
+cout<<endl;
 
+        for(int i = 0;i<n;i++) {
+            for(auto ele:intervals[i]) {
+                cout<<ele<<" ";
             }
-
-            j++;
+            cout<<endl;
         }
 
-        ans.push_back({pstart,pend});
-        return ans;
-        
-    }
+        vector<int> interval = intervals[0];
 
+        for(int i = 1;i<n;i++) {
+            //vector<int> prev = intervals[i-1];
+            vector<int> cur = intervals[i];
+            if(cur[0]<=interval[1]) {
+                
+                interval[1] = max(interval[1],cur[1]);
+            }
+            else {
+                ans.push_back(interval);
+                interval = cur;
+            }
+        }
+        ans.push_back(interval);
+        return ans;
+    }
 };
