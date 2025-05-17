@@ -1,31 +1,31 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        //need to find the dip
-        int sz = nums.size();
-        int j = sz-1, dip_pos = -1;
-        while(j>0) {
-            if(nums[j]>nums[j-1]) {
-                dip_pos = j-1;
+        int n = nums.size();
+        int dip = -1;
+        int i = n-2;
+        while(i>=0) {
+            if(nums[i]<nums[i+1]) {
+                dip = i;
+                break;
+            }
+            i--;
+        }
+
+        if(dip<0) {
+            return reverse(nums.begin(),nums.end());
+        }
+        //cout<<dip<<endl;
+        int j = n-1;
+        while(j>dip) {
+            if(nums[j]>nums[dip]) {
+                swap(nums[dip],nums[j]);
                 break;
             }
             j--;
         }
-        if(dip_pos == -1) {
-            sort(nums.begin(),nums.end());
-            return;
-        }
-        j = sz-1;
-        while(j>dip_pos) {
-            if(nums[j]>nums[dip_pos]) {
-                swap(nums[j],nums[dip_pos]);
-                break;
-            }
 
-            j--;
-        }
-
-        sort(nums.begin()+dip_pos+1,nums.end());
+        reverse(nums.begin()+dip+1,nums.end());
         
     }
 };
