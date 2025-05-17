@@ -3,7 +3,7 @@ public:
     void nextPermutation(vector<int>& nums) {
         //need to find the dip
         int sz = nums.size();
-        int j = sz-1, dip_pos = 0;
+        int j = sz-1, dip_pos = -1;
         while(j>0) {
             if(nums[j]>nums[j-1]) {
                 dip_pos = j-1;
@@ -11,7 +11,7 @@ public:
             }
             j--;
         }
-        if(dip_pos == 0) {
+        if(dip_pos == -1) {
             sort(nums.begin(),nums.end());
             return;
         }
