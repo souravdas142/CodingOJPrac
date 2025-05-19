@@ -5,89 +5,106 @@ using namespace std;
 
 // } Driver Code Ends
 
-#define ll long long
+
+ostream& operator <<(ostream& print,const vector<int>& vec) {
+    for(auto ele:vec) {
+        print<<ele<<" ";
+    }
+    return print;
+}
+
 class Solution {
   public:
-    // arr[]: Input Array
-    // N : Size of the Array arr[]
     // Function to count inversions in the array.
-    
-    void merge(ll arr[],ll &ans,int left,int mid,int right) {
+    void merge(vector<int>& arr, int &ans, int l, int mid, int r) {
         
-        ll a = left;
-        ll lend = mid;
-        ll rf = mid+1;
+        vector<int> arrl(arr.begin()+l,arr.begin()+mid+1);
+        vector<int> arrr(arr.begin()+mid+1,arr.begin()+r+1);
+    /*    
+        cout<<endl<<"arrl = "<<arrl<<endl;
+        cout<<"arrr = "<<arrr<<endl;
+       
+        cout<<"before sort arr = ";
+        for(int i = l;i<=r;i++) {
+            cout<<arr[i]<<" ";
+        }
+        cout<<endl;
+      */  
+       
+        int lsz = arrl.size();
+        int rsz = arrr.size();
+        int i = 0;
+        int j = 0;
+        int k = l;
         
-        vector<ll> res(right-left+1,0);
-        ll resi = 0;
-        
-        while(left<=lend && rf<=right) {
-            
-            if(arr[left]>arr[rf]) {
-                res[resi] = arr[rf];
-                ans+= (lend-left+1);
-                rf++; resi++;
+        while(i<lsz && j<rsz) {
+            if(arrl[i]>arrr[j]) {
+                ans += (lsz-i);
+                arr[k] = arrr[j];
+                j++;k++;
             }
-            else if(arr[left]<=arr[rf]) {
-                res[resi]=arr[left];
-                left++; resi++;
+            else {
+                arr[k++] = arrl[i++];
             }
         }
-        while(left<=lend) {
-            res[resi] = arr[left];
-            resi++; left++;
+        
+        while(i<lsz) {
+            arr[k++] = arrl[i++];
         }
-        while(rf<=right) {
-            res[resi] = arr[rf];
-            resi++;rf++;
+        
+        while(j<rsz) {
+            arr[k++] = arrr[j++];
         }
-        for(ll x:res) {
-            arr[a++] = x;
+    /*    
+        cout<<"after sort arr = ";
+        for(int i = l;i<=r;i++) {
+            cout<<arr[i]<<" ";
         }
+        cout<<endl;
+      */  
+        
+    }
+    void mergeSort(vector<int>& arr, int &ans, int l, int r, int n) {
+        if(l>=r) return;
+        int mid = l+(r-l)/2;
+        mergeSort(arr,ans,l,mid,n);
+        mergeSort(arr,ans,mid+1,r,n);
+        merge(arr,ans,l,mid,r);
+        
     }
     
-    void msort(ll arr[],ll &ans,int left,int right) {
-        if(left>=right) return;
-        ll mid = left+(right-left)/2;
-        msort(arr,ans,left,mid);
-        msort(arr,ans,mid+1,right);
-        
-        merge(arr,ans,left,mid,right);
-        
-    }
-    
-    long long int inversionCount(long long arr[], int n) {
-        
-        ll ans = 0;
-        msort(arr,ans,0,n-1);
-        return ans;
+    int inversionCount(vector<int> &arr) {
+        // Your Code Here
+        int count = 0;
+        int n = arr.size();
+        int l = 0;
+        int r = n-1;
+        mergeSort(arr,count,l,r,n);
+        return count;
         
     }
 };
-
-
-
-
-
 
 
 //{ Driver Code Starts.
 
 int main() {
 
-    long long T;
+    int T;
     cin >> T;
-
+    cin.ignore();
     while (T--) {
-        int N;
-        cin >> N;
-
-        long long A[N];
-        for (long long i = 0; i < N; i++) {
-            cin >> A[i];
-        }
+        int n;
+        vector<int> a;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int num;
+        while (ss >> num)
+            a.push_back(num);
         Solution obj;
-        cout << obj.inversionCount(A, N) << endl;
+        cout << obj.inversionCount(a) << endl;
+        cout << "~" << endl;
     }
 
     return 0;
