@@ -2,24 +2,36 @@ class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
 
-        unordered_map<int,int> ump;
-        int sz = nums.size();
-        for(int i = 0;i<sz;i++) {
-            ump[nums[i]]=1;
+        int n = nums.size();
+        if(n<2) return n;
+
+        unordered_map<int,int> look;
+        for(int ele:nums) {
+            look.insert({ele,1});
         }
-        int maxi = 0;
-        for(int i = 0;i<sz;i++) {
-            int num = nums[i];
-            int cnt =ump[num];
-            int back = num - 1;
-            while(ump.count(back)) {
-                if(ump[back]==0) break;
-                cnt+=ump[back];
-                ump[back]= 0;
-                back = back-1;
+        int maxi = 1;
+        for(auto mit:look) {
+            int x = mit.first;
+            if(mit.second==0) continue;
+            look[mit.first] = 0;
+            int cnt = 1;
+            int inc = x+1;
+            while(look.find(inc)!=look.end()) {
+                look[inc] = 0;
+                inc += 1;
+                cnt++;
+                
             }
-            ump[num]=cnt;
-            maxi = max(maxi,ump[num]);
+            int dec = x-1;
+            while(look.find(inc)!=look.end()) {
+                look[dec] = 0;
+                inc -= 1;
+                cnt++;
+                
+            }
+            maxi = max(maxi,cnt);
+            cnt = 0;
+
         }
 
         return maxi;
