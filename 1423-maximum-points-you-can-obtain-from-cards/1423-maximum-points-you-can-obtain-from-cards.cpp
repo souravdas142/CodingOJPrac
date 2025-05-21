@@ -14,6 +14,7 @@ public:
 
         j= n-1;
         i = k-1;
+        ans = total;
 
         while(i>=0) {
             total-=cardPoints[i];
