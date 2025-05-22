@@ -8,7 +8,7 @@ public:
         int n = fruits.size();
         while(j<n) {
             ump[fruits[j]]++;
-            while(ump.size()>2) {
+            if(ump.size()>2) {
                 ump[fruits[i]]--;
                 if(ump[fruits[i]]==0) {
                     ump.erase(fruits[i]);
