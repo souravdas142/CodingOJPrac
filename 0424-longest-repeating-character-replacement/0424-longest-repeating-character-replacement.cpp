@@ -14,11 +14,9 @@ public:
             
             if((j-i-maxfreq+1)>k) {
                 ump[s[i]]--;
-                int updfreq = 0;
-                for(auto pr:ump) {
-                    updfreq = max(updfreq,pr.second);
-                }
-                maxfreq = updfreq;
+                if(ump[s[i]]==0) ump.erase(s[i]);
+               // int updfreq = 0;
+              
                 i++;
             }
             int changes = j-i-maxfreq+1;
