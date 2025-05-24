@@ -22,13 +22,13 @@ public:
             }
         }
         if(matrix[0][0]==0) {
-            for(int i = 0;i<row;i++) {
-                matrix[i][0] = 0;
+            for(int i = 0;i<col;i++) {
+                matrix[0][i] = 0;
             }
         }
         if(col0 == 0) {
-            for(int i = 0;i<col;i++) {
-                matrix[0][i] = 0;
+            for(int i = 0;i<row;i++) {
+                matrix[i][0] = 0;
             }
         }
     }
