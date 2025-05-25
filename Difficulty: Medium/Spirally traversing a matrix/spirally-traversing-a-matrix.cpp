@@ -1,74 +1,60 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
   public:
-    vector<int> spirallyTraverse(vector<vector<int> > &matrix) {
+    vector<int> spirallyTraverse(vector<vector<int> > &mat) {
+        // code here
         
         vector<int> ans;
-        int col = matrix[0].size();
-        int row = matrix.size();
+        int row = mat.size();
+        int col = mat[0].size();
+        int top = 0, bottom = row-1, left = 0, right = col-1;
         
-        int top = 0, bottom = row - 1;
-        int left = 0, right = col - 1;
-        
-        while(left<=right && top<=bottom) {
-            //left to right
-            for(int i = left;i<=right;i++) {
-                ans.push_back(matrix[top][i]);
-            }
-            top++;
+        // print top
+        while(left<=right || top<=bottom) {
             
-            // top to bottom
-            for(int i = top;i<=bottom;i++) {
-                ans.push_back(matrix[i][right]);
-            }
-            right--;
-            
+            int k = left;
             if(top<=bottom) {
-                // right to left
-                for(int i = right;i>=left;i--) {
-                    ans.push_back(matrix[bottom][i]);
+                while(k<=right) {
+                    ans.push_back(mat[top][k]);
+                    //cout<<mat[top][k];
+                    k++;
+                }
+                top++;
+            }
+            // printing right side
+            k=top;
+            if(left<=right) {
+                while(k<=bottom) {
+                    ans.push_back(mat[k][right]);
+                    //cout<<mat[k][right];
+                    k++;
+                }
+                right--;
+            }
+            
+            k = right;
+            // printing bottom
+            if(top<=bottom) {
+                while(k>=left) {
+                    ans.push_back(mat[bottom][k]);
+                    //cout<<mat[bottom][k];
+                    k--;
                 }
                 bottom--;
             }
+            
+            k=bottom;
+            // printing left
             if(left<=right) {
-                // bottom to top
-                for(int i = bottom;i>=top;i--) {
-                    ans.push_back(matrix[i][left]);
+                while(k>=top) {
+                    ans.push_back(mat[k][left]);
+                    //cout<<mat[left][k];
+                    k--;
                 }
                 left++;
             }
         }
-        return ans;   
+        return ans;
+        
+        
     }
 };
-
-//{ Driver Code Starts.
-int main() {
-    int t;
-    cin >> t;
-
-    while (t--) {
-        int r, c;
-        cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c, 0));
-
-        for (int i = 0; i < r; i++) {
-            for (int j = 0; j < c; j++) {
-                cin >> matrix[i][j];
-            }
-        }
-
-        Solution ob;
-        vector<int> result = ob.spirallyTraverse(matrix);
-        for (int i = 0; i < result.size(); ++i)
-            cout << result[i] << " ";
-        cout << endl;
-    }
-    return 0;
-}
-// } Driver Code Ends
