@@ -1,40 +1,38 @@
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
-        
 
-        int sz = nums.size();
-        if(sz == 0) return false;
-        if(sz == 1 && nums[0]==target) return true;
-        int left = 0, right = sz - 1;
+        int n = nums.size();
+        int low = 0;
+        int high = n-1;
 
-        while(left<=right) {
-            int mid = left+(right-  left)/2;
-            if(target == nums[mid]) return true;
-            if(nums[left]==nums[mid] && nums[mid] == nums[right]) {
-                left++; right--;
+        while(low<high) {
+            int mid = low+(high-low)/2;
+
+            if(nums[mid]==target) return true;
+            if(low!=mid && mid!=high && nums[low]==nums[mid] && nums[mid] == nums[high]) {
+                low++; high--;
             }
-            else if(nums[left]<=nums[mid]) { // sorted
-                if(target>=nums[left] && target<=nums[mid]) {
-                    right = mid;
+            else if(nums[mid]>=nums[low]) { // sorted  on the left side
+                if(nums[low]<= target && nums[mid]>=target) {
+                    high = mid;
                 }
                 else {
-                    left = mid+1;
+                    low = mid+1;
                 }
             }
-            else { //sorted
-
-                if(target>=nums[mid] && target<=nums[right]) {
-                    left = mid+1;
+            else { // sorted on right side
+                if(nums[mid]<=target && nums[high]>=target) {
+                    low = mid;
                 }
                 else {
-                    right = mid;
+                    high = mid;
                 }
-
             }
+
         }
-
-       return false;
+        if(nums[high]!=target) return false;
+        return true;
         
     }
 };
