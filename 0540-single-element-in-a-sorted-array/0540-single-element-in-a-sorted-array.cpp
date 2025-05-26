@@ -1,23 +1,35 @@
+ostream& operator<<(ostream& print, set<int>& st) {
+    for(auto ele:st) {
+        print<<ele<<" ";
+    }
+    return print;
+}
+
 class Solution {
 public:
+    
     int singleNonDuplicate(vector<int>& nums) {
-
-        int sz = nums.size();
-        int left = 0, right = sz - 1;
-        if(sz==1) return nums[0];
-        while(left<=right) {
-            int mid = left+(right-left)/2;
-
-            if((mid&1 && nums[mid]==nums[mid-1]) || (!(mid&1) && nums[mid]==nums[mid+1])  ) {
-                left = mid+1;
-            }
+        int n = nums.size();
+        int low = 0;
+        int high = n-1;
+        while(low<high) {
+            int mid = low+(high-low)/2;
+            if(mid%2==0) mid--;
+            if(mid&1) {
+                if(nums[mid]==nums[mid+1])
+                    high = mid-1;
+                else if(nums[mid]==nums[mid-1])
+                    low = mid+1;
+                //else return nums[mid];
+            }/*
             else {
-                right = mid-1;
-            }
-
+                if(nums[mid]==nums[mid+1])
+                    low = mid+2;
+                else if(nums[mid]==nums[mid-1])
+                    high = mid-2;
+                else return nums[mid];
+            }*/
         }
-
-        return nums[left];
-        
-    }
+        return nums[high];
+    }   
 };
