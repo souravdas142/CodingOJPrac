@@ -8,14 +8,16 @@ public:
             int dys = days[i];
             
             if(ans>=dys) {
+                
                 cnt++;
-                if(cnt>1 && ans<days[i-1]) break;
+                
                 if(cnt==k) {
                     m--;
                     cnt=0;
                 }
                 if(m==0) return true;
             }
+            else cnt = 0;
             i++;
         }
 
