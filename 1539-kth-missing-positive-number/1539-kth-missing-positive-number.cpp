@@ -13,11 +13,11 @@ public:
            
                 if(cnt+m>=k) {
                     ans = (i+(k-cnt));
-                    
+                    break;
                 }
                 cnt+=m;
             
-            if(cnt==k) break;
+        
             i = arr[j];
 
 
