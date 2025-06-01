@@ -10,19 +10,22 @@
  */
 class Solution {
 public:
+    ListNode* reverseListll(ListNode* head, ListNode* prev, ListNode* cur) {
+        if(cur==nullptr) return prev;
+        ListNode* tmp = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur= tmp;
+        return reverseListll(head,prev,cur);
+
+    }
     ListNode* reverseList(ListNode* head) {
 
         if(head == nullptr || head->next == nullptr) return head;
 
         ListNode* prev = nullptr;
         ListNode* cur = head;
-        while(cur!=nullptr) {
-            ListNode* tmp = cur->next;
-            cur ->next = prev;
-            prev = cur;
-            cur = tmp;
-        }
-        head = prev;
-        return head;
+        return reverseListll(head,prev,cur);
+        
     }
 };
