@@ -1,45 +1,45 @@
 class Solution {
-
-    void solve(string s, int n,int inc, string &ans) {
-        if(inc>=n-1) {
-            ans = s;
-            return;
+public:
+    string rle(int k, int n, string ans) {
+        //cout<<"k = "<<k<<endl;
+        if(k>=n) {
+            
+            return ans;
         }
-    
-        string res = "";
-        int sz = s.length();
-        int cnt =1;
-        char curch = s[0];
-        for(int i = 1;i<sz;i++) {
 
-            if(s[i]==s[i-1]) cnt++;
+        int m = ans.size();
+        int i = 0, j = 0;
+        int cnt = 0;
+        string res = "";
+        while(j<m) {
+            if(ans[i]==ans[j]) {
+                cnt++;
+            }
             else {
                 res+=to_string(cnt);
-                res.push_back(curch);
-                curch = s[i];
-                cnt=1;
-            } 
-
+                res+=ans[i];
+                i = j;
+                cnt = 1;
+                
+            }
+            
+            j++;
         }
 
-        res+=to_string(cnt);
-        res.push_back(curch);
-        cout<<s<<" = "<<res<<endl;
-        solve(res, n,inc+1,ans);
+        res+=(to_string(cnt));
+        res+=ans[i];
 
+        cout<<res<<endl;
+        return rle(k+1,n,res);
     }
-public:
     string countAndSay(int n) {
 
-        string s = to_string(1);
-        if(n==1) return s;
-        string ans = "";
-        int inc = 0;
+        if(n==1) return "1";
+      
+        int i = 1;
+        string ans = "1";
 
-        solve(s,n,inc,ans);
-
-
-        return ans;
+        return rle(i,n,ans);
         
     }
 };
