@@ -1,45 +1,26 @@
 class Solution {
-
-    int expand(string s,int len, int left,int right,string& pans) {
-
-        int ans = 0;
-        
-        while(right<len && left>=0) {
-            if(s[left]!=s[right]) break;
-            right++;left--;
-        }
-        ans =  (right-left-1);
-        pans = string(s.begin()+left+1,s.begin()+right);
-        return ans;
-    }
 public:
-    string longestPalindrome(string s) {
-
-        int len = s.length();
-        if(len==1) return s;
-        int i = 0;
-        int maxlen = 1;
-        string ans;
-
-        while(i<len) {
-            // odd
-            string oans,eans;
-            int odd = expand(s,len,i,i,oans);
-            int even = expand(s,len,i,i+1,eans);
-
-            int flen = max(odd,even);
-
-            if(flen>maxlen) {
-                maxlen = flen;
-                ans = (flen&1)?oans:eans;
-                
+    void checkPalindrome(string& s,int n, int mid1,int mid2,string& ans, int& len) {
+        int l = 0;
+        while(mid1>=0 && mid2<n) {
+            if(s[mid1]==s[mid2]) {
+                if(mid2-mid1+1>len) {
+                    len = mid2-mid1+l;
+                    ans = string(s.begin()+mid1,s.begin()+mid2+1);
+                }
             }
-
-            i++;
+            mid1--;
+            mid2++;
         }
-
-
+    }
+    string longestPalindrome(string s) {
+        int n = s.size();
+        string ans = "";
+        int len = INT_MIN;
+        for(int i =0;i<n;i++) {
+            checkPalindrome(s,n,i,i,ans,len);
+            checkPalindrome(s,n,i,i+1,ans,len);
+        }
         return ans;
-        
     }
 };
