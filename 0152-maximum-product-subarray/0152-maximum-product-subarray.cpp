@@ -1,23 +1,27 @@
+#define ll long long
+
 class Solution {
 public:
-     int maxProduct(vector<int>& nums) {
+    int maxProduct(vector<int>& nums) {
 
-        int prod = nums[0];
-        int sz = nums.size();
+        int n = nums.size();
+        ll preProd = 1;
+        ll sufProd = 1;
+
+        ll ans = INT_MIN;
         
+        for(int i = 0;i<n;i++) {
 
-        int pref = 1,suf = 1;
+                preProd *= nums[i];
 
-        for(int i  = 0;i<sz;i++) {
-
-            if(pref == 0) pref =1;
-            if(suf == 0) suf =1;
-            pref = pref*nums[i];
-            suf = suf*nums[sz-i-1];
-            prod = max(prod,max(pref,suf));
-
+                sufProd *= nums[n-i-1];
+            
+                ans = max(ans,max(preProd,sufProd));
+                if(preProd == 0) preProd = 1;
+                if(sufProd == 0) sufProd = 1;
         }
-        return prod;
+
+        return ans;
         
     }
 };
