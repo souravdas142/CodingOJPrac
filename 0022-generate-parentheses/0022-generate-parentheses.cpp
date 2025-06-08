@@ -1,34 +1,57 @@
 class Solution {
-    void solve(int n,string input,int left,int right,string res,vector<string>& ans) {
-            if(left == right && left == n) {
+public:
+
+    void solve(string& brackets,unordered_map<string,bool>& check, int n,int opn, int cls,vector<string>& ans, string res) {
+
+        cout<<res<<endl;
+
+        if(res.size()>=n*2) {
+           
                 ans.push_back(res);
-                return;
-            }
-
-        if(left<n) {
-            res.push_back(input[0]);
-            solve(n,input,left+1,right,res,ans);
-            res.pop_back();
-        }
-        if(left>right && right<n) {
-            res.push_back(input[1]);
-            solve(n,input,left,right+1,res,ans);
-            res.pop_back();
+            return;
         }
 
+        if(cls>opn) return;
+
+        if(opn<n && check.find(res+brackets[0])==check.end()) {
+            res.push_back(brackets[0]);
+            
+                opn++;
+                check[res] = true;
+                solve(brackets,check,n,opn,cls,ans,res);
+                opn--;
+            
+            res.pop_back();
+            //cout<<"opn "<<res<<endl;
+        } 
+        if(cls<n && check.find(res+brackets[1])==check.end()) {
+            
+            res+=brackets[1];
+            
+                cls++;
+                check[res] = true;
+                
+                solve(brackets,check,n,opn,cls,ans,res);
+                cls--;
+            
+            res.pop_back();
+            //cout<<res<<endl;
+
+        }
+        
 
     }
-public:
     vector<string> generateParenthesis(int n) {
-        string input = "()";
-        int left=0,right = 0;
-        string res="";
+
+        string brackets = "()";
+
         vector<string> ans;
+        string res = "";
+        int opn = 0, cls = 0;
+        unordered_map<string,bool> check;
+        solve(brackets,check,n,opn, cls, ans,res);
 
-        solve(n,input,left,right,res,ans);
         return ans;
-
-
         
     }
 };
