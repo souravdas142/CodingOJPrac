@@ -1,39 +1,37 @@
+#define vvi vector<vector<int> >
+#define vi vector<int> 
+
 class Solution {
 public:
 
-    void solve(vector<int>& candidates, int n, int index,int target,vector<int> res, vector<vector<int> >& ans) {
-
-        if(index>=n || target == 0) {
-            if(target == 0) {
+    void solve1(vi& candidates, int n, int index, vvi& ans, vi res, int target) {
+        if(index>=n || target <= 0) {
+            if(target==0) {
                 ans.push_back(res);
-                
             }
             return;
         }
-       
-     
-
-        if(target-candidates[index]>=0) {
-            res.push_back(candidates[index]);
-            solve(candidates, n,index,target-candidates[index],res,ans);
-            res.pop_back();
-        }
-
-        solve(candidates, n, index+1, target,res,ans);
-
+        //take
+        res.push_back(candidates[index]);
+            
+        solve1(candidates,n,index,ans, res,target-candidates[index]);
+        res.pop_back();
+        
+        solve1(candidates,n,index+1,ans,res,target);
     }
 
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
 
         int n = candidates.size();
         int index = 0;
-        vector<vector<int> > ans;
 
-        vector<int> res;
+        vvi ans;
+        vi res;
 
-        solve(candidates,n,index,target,res,ans);
+        solve1(candidates,n,index,ans,res,target);
 
         return ans;
+
         
     }
 };
