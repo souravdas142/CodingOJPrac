@@ -1,56 +1,34 @@
-#define vvi vector<vector<int> >
-#define vi vector<int>
-#define svi set<vector<int> >
-
 class Solution {
-public:
-
-    void solve(vi& nums, int n, int index, vvi& ans, vi res) {
-        if(index>=n) {
-            ans.push_back(res);
+    void solve(vector<int>& nums,int sz,int index,vector<int> res, vector<vector<int> >& ans,map<vector<int>,bool>& mp) {
+        if(index>=sz) {
+            if(!mp.count(res)) {
+                ans.push_back(res);
+                mp[res] = true;
+            }
+            
             return;
+
         }
-
-        for(int i = index;i<n;i++) {
-
+        for(int i = index;i<sz;i++) {
             if(i>index && nums[i]==nums[i-1]) continue;
-
+            solve(nums,sz,i+1,res,ans,mp);
             res.push_back(nums[i]);
-            solve(nums,n,index+1,ans,res);
+            solve(nums,sz,i+1,res,ans,mp);
             res.pop_back();
-            solve(nums,n,index+1,ans,res);
             
         }
     }
-
-    void solve2(vi& nums, int n, int index, svi& sans, vi res) {
-        if(index>=n) {
-            sans.insert(res);
-            return;
-        }
-        res.push_back(nums[index]);
-        solve2(nums,n,index+1,sans,res);
-        res.pop_back();
-        solve2(nums,n,index+1,sans,res);
-
-    }
-
+public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
 
-        int n = nums.size();
-        //sort(nums.begin(),nums.end());
+        int sz = nums.size();
+        map<vector<int>,bool > mp;
         int index = 0;
-        vvi ans;
-        vi res;
-
-        svi sans;
-
-        solve2(nums,n,index, sans, res);
-
-        ans = vvi(sans.begin(),sans.end());
-
+        vector<vector<int> > ans;
+        vector<int> result;
+        solve(nums,sz,index,result,ans,mp);
         return ans;
-
         
     }
 };
