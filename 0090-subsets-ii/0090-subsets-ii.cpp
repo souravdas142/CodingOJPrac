@@ -4,35 +4,53 @@
 
 class Solution {
 public:
-    void solve(vi& nums,int sz,int index,vi res,svi& ans) {
 
-        if(index>=sz) {
-
-            ans.insert(res);
-
+    void solve(vi& nums, int n, int index, vvi& ans, vi res) {
+        if(index>=n) {
+            ans.push_back(res);
             return;
         }
 
-        solve(nums,sz,index+1,res,ans);
+        for(int i = index;i<n;i++) {
 
-        int ele = nums[index];
-        res.push_back(ele);
-        sort(res.begin(),res.end());
-        solve(nums,sz,index+1,res,ans);
+            if(i>index && nums[i]==nums[i-1]) continue;
 
+            res.push_back(nums[i]);
+            solve(nums,n,index+1,ans,res);
+            res.pop_back();
+            solve(nums,n,index+1,ans,res);
+            
+        }
+    }
 
+    void solve2(vi& nums, int n, int index, svi& sans, vi res) {
+        if(index>=n) {
+            sans.insert(res);
+            return;
+        }
+        res.push_back(nums[index]);
+        solve2(nums,n,index+1,sans,res);
+        res.pop_back();
+        solve2(nums,n,index+1,sans,res);
 
     }
+
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
 
-        svi svans;
+        int n = nums.size();
+        //sort(nums.begin(),nums.end());
+        int index = 0;
         vvi ans;
         vi res;
-        int sz = nums.size();
-        int index = 0;
-        solve(nums,sz,index,res,svans);
-        for(auto ele:svans) ans.push_back(ele);
+
+        svi sans;
+
+        solve2(nums,n,index, sans, res);
+
+        ans = vvi(sans.begin(),sans.end());
+
         return ans;
+
         
     }
 };
