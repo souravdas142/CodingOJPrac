@@ -1,33 +1,40 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-       int n = s.length();
-       int i = 0,j = 0;
-       int ans = 0;
-       int maxfreq = 0;
-       unordered_map<char,int> ump;
 
-       while(j<n) {
-            ump[s[j]]++;
-            maxfreq = max(maxfreq,ump[s[j]]);
+        int n = s.size();
+        int i = 0;
+        int j = 0;
+        
+        int maxfreq = 0;
+        unordered_map<char,int> freq;
+        int mxfreq = 0;
+
+        while(j<n) {
+            freq[s[j]]++;
+
+            mxfreq = max(mxfreq,freq[s[j]]);
+            int need_changes = j-i+1-mxfreq;
+
+          if(need_changes>k) {
+            freq[s[i]]--;
+            if(freq[s[i]]==0) freq.erase(s[i]);
+            i++;
+          }   
+          if(need_changes<=k) {
+                maxfreq = max(maxfreq,j-i+1);
+          } 
+
+          
 
             
-            if((j-i-maxfreq+1)>k) {
-                ump[s[i]]--;
-                if(ump[s[i]]==0) ump.erase(s[i]);
-               // int updfreq = 0;
-              
-                i++;
-            }
-            int changes = j-i-maxfreq+1;
-            if(changes<=k) {
-                ans = max(ans,j-i+1);
-            }
+          j++;
+            
+            
+           
+        }
 
-            j++;
-       }
-
-       return ans;
-       
+        return maxfreq;
+        
     }
 };
