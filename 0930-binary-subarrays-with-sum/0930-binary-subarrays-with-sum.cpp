@@ -1,32 +1,40 @@
+#define newln "\n"
+
 class Solution {
-private:
-    int calc(vector<int>& nums,int goal) {
-        if(goal<0) return 0;
+public:
+
+    int findSubarrays(vector<int>& nums,int goal) {
+        int ans = 0;
         int n = nums.size();
-        int i = 0, j = 0;
+        int j = 0;
+        int i = 0;
         int sum = 0;
-        int cnt = 0;
-        
         while(j<n) {
-            sum += nums[j];
-            while(sum>goal) {
+            sum+=nums[j];
+            while(i<=j && sum>goal) {
                 sum-=nums[i];
                 i++;
             }
-            if(sum<=goal) {
-                cnt+=(j-i+1);
-            }
+            ans+=(j-i+1);
+
 
             j++;
         }
-        return cnt;
-
+        //cout<<ans<<newln;
+        return ans;
     }
-public:
+
     int numSubarraysWithSum(vector<int>& nums, int goal) {
 
-        return (calc(nums,goal)-calc(nums,goal-1));
+        //  x = find all the subarray with goal <= goal
+        // y = find all the subarray with goal <= goal - 1
+        // the answer will be always x-y
 
+        int x = findSubarrays(nums,goal);
+        int y = findSubarrays(nums,goal-1);
+        int ans = x-y;
 
+        return ans;
+        
     }
 };
