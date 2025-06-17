@@ -1,59 +1,49 @@
 class Solution {
-    int dir(int a) {
-        if(a<0) return -1;
-        return 1;
-    }
 public:
-    vector<int> asteroidCollision(vector<int>& ast) {
-        int n = ast.size();
-        int dirj = 1;
+    vector<int> asteroidCollision(vector<int>& aster) {
+
+        int n = aster.size();
         stack<int> st;
-        
-        for(int j = 0;j<n;j++) {
+        vector<int> ans;
 
-            int a = ast[j];
-            dirj = dir(ast[j]);
-            int sz = abs(ast[j]);
+        int i = 0;
 
-            if(st.empty() || (!st.empty() && dirj == dir(st.top()) )) {
-                st.push(ast[j]);
-                continue;
+        while(i<n) {
+
+            while(!st.empty() && st.top() < abs(aster[i]) && aster[i]<0) {
+                st.pop();
             }
 
-            while(!st.empty() && dir(st.top()) == 1 && dirj==-1) {
-                if(!st.empty() && sz>st.top()) {
-                    st.pop();
+            if(st.empty()) {
+                if(aster[i] < 0) {
+                    ans.push_back(aster[i]);
+                    
                 }
-                else if(!st.empty() && sz == st.top()) {
-                    st.pop();
-                    sz = 0;
-                    break;
-                }
-                else if(!st.empty() && sz<st.top()) {
-                    sz = 0;
-                    break;
+                else {
+                    st.push(aster[i]);
                 }
             }
-
-            if(a<0 && sz>0) {
-                st.push(a);
-
+            else if(st.top() == abs(aster[i]) && aster[i] < 0) {
+                st.pop();
             }
-            if(a>=0) {
-                st.push(a);
+            else if(aster[i]>=0) {
+                st.push(aster[i]);
             }
 
 
-
-
+            i++;
         }
 
-        vector<int> ans;
+        if(ans.size() == 0 && st.empty()) return ans;
+
+        int sz = ans.size();
+
         while(!st.empty()) {
             ans.push_back(st.top());
             st.pop();
         }
-        reverse(ans.begin(),ans.end());
+        reverse(ans.begin()+sz,ans.end());
         return ans;
+        
     }
 };
