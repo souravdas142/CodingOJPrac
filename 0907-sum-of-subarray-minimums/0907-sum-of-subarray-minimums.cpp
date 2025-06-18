@@ -90,8 +90,9 @@ public:
         for(int i = 0;i<sz;i++) {
             int nc = vnse[i]-i;
             int pc = i-vpse[i];
-            int tc = (nc*pc);
-            ans=(ans%mod +  (tc*arr[i])%mod   )%mod;
+            
+            
+            ans = (ans + (pc * nc * 1LL * arr[i]) % mod) % mod;
         }
 
         return (ans%mod);
