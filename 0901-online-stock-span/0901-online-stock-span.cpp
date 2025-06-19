@@ -3,31 +3,19 @@ class StockSpanner {
     stack<pair<int,int> > st;
 public:
     StockSpanner() {
+        ios_base::sync_with_stdio(false); cin.tie(nullptr);
         cnt = -1;
     }
     
     int next(int price) {
 
         cnt++;
-
         int ele = price;
-
-        int prevPos = -1;
         int ans = 1;
-        if(!st.empty()) {
-            
-            prevPos = st.top().second;
-            
-            
-
-        }
-        
-
         while(!st.empty() && st.top().first<=ele) {
             st.pop();
         }
         if(st.empty()) {
-            
             ans =  cnt+1;
         } else {
             ans  = cnt-st.top().second;
