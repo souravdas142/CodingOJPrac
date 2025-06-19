@@ -1,78 +1,65 @@
 
-ostream& operator<<(ostream& print,vector<int>& vec) {
-    print<<endl;
-    for(auto a: vec) cout<<a<<"->";
-    print<<endl;
+ostream& operator<<(ostream& print, vector<int>& p) {
+    for(auto e: p) {
+        print<<e<<" ";
+    }
     return print;
 }
 
-
 class Solution {
-private:
-    void calcNse(vector<int> &heights, vector<int>& nse, int n) {
-        int i = n-1;
+public:
+
+    void nse(vector<int>& heights, vector<int>& nsePos, int n) {
         stack<int> st;
-        while(i>=0) {
-            while(!st.empty() && heights[i]<=heights[st.top()]) {
+        int j = n-1;
+        while(j>=0) {
+
+            while(!st.empty() && heights[st.top()]>=heights[j]) {
                 st.pop();
             }
-            if(st.empty()) {
-                nse[i] = n;
+            if(!st.empty()) {
+                nsePos[j] = st.top();
             }
-            else {
-                nse[i] = st.top();
-            }
-            st.push(i);
-            i--;
+            st.push(j);
+
+            j--;
         }
-    } 
+        
+    }
 
-    void calcPse(vector<int>& heights, vector<int>& pse,int n) {
-        int i = 0;
+    void pse(vector<int>& heights, vector<int>& psePos, int n) {
         stack<int> st;
-        while(i<n) {
-            
-            while(!st.empty() && heights[i]<=heights[st.top()]) {
+        int j = 0;
+        while(j<n) {
+            while(!st.empty() && heights[st.top()]>=heights[j]) {
                 st.pop();
             }
-            if(st.empty()) {
-                pse[i] = -1;
+            if(!st.empty()) {
+                psePos[j] = st.top();
             }
-            else {
-                pse[i] = st.top();
-            }
-            st.push(i);
-
-
-            i++;
+            st.push(j);
+            j++;
         }
     }
-public:
+
     int largestRectangleArea(vector<int>& heights) {
-
         int n = heights.size();
+        vector<int> psePos(n,-1),nsePos(n,n);
+        pse(heights,psePos,n);
+        nse(heights,nsePos,n);
+        cout<<psePos<<endl<<nsePos<<endl;
+        int maxArea = 0;
 
-        vector<int> pse(n),nse(n);
-        calcNse(heights,nse,n);
-        calcPse(heights,pse,n);
+        int j = 0;
+        while(j<n) {
 
-       // cout<<nse<<endl;
-      //  cout<<pse<<endl;
+            int cur = heights[j];
+            int area = (nsePos[j]-psePos[j]-1)*cur;
+            maxArea = max(maxArea,area);
 
-        int i = 0;
-        int maxi = 0;
-
-        while(i<n) {
-
-            int xpse = i-pse[i];
-            int xnse = nse[i]-i-1;
-            int x = xpse+xnse;
-            int area = x*heights[i];
-
-            maxi = max(maxi,area);
-
-            i++;
+            j++;
         }
-        return maxi;
+
+        return maxArea;
     }
 };
