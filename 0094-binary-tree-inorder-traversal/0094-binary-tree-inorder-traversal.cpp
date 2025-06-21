@@ -11,25 +11,32 @@
  */
 class Solution {
 public:
-    void inOrderTreversal(vector<int>& ans, TreeNode* root) {
-        if(root==nullptr) {
-            return;
-        }
-        inOrderTreversal(ans,root->left);
-        
-        ans.push_back(root->val);
-
-        
-        inOrderTreversal(ans,root->right);
-    }
     vector<int> inorderTraversal(TreeNode* root) {
 
-        // inorder terversal 
-        // L Rt R
-
         vector<int> ans;
-        inOrderTreversal(ans,root);
+        if(root==nullptr) return ans;
+        stack<TreeNode*> st;
+        st.push(root);
+        map<TreeNode*,bool> mark;
+        mark[nullptr] = true;
+
+        while(!st.empty()) {
+            TreeNode* cur = st.top();
+            while(cur->left!=nullptr && mark[cur->left]!=true) {
+                cur=cur->left;
+                st.push(cur);
+            }
+            ans.push_back(st.top()->val);
+            mark[st.top()]=true;
+            cur=st.top()->right;
+            st.pop();
+            if(cur!=nullptr)
+                st.push(cur);
+        }
+        
         return ans;
+
+
         
     }
 };
