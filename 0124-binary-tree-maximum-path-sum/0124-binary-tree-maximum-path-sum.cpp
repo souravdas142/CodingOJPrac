@@ -12,19 +12,19 @@
 class Solution {
 public:
     int solve(TreeNode* root, int& ans) {
-        if(root->left == nullptr || root->right==nullptr) {
-            return root->val;
+        if(root==nullptr) {
+            return 0;
 
         }
-        int left = solve(root->left,ans);
-        int right = solve(root->right,ans);
+        int left = max(0,solve(root->left,ans));
+        int right = max(0,solve(root->right,ans));
 
-        int cur = max(left+right+root->val,max(left,right));
-        return cur;
+        ans = max(ans,left+right+root->val);
+        return root->val+max(left,right);
     }
     int maxPathSum(TreeNode* root) {
-        int ans = 0;
-        ans = solve(root,ans);
+        int ans = root->val;
+        int k = solve(root,ans);
         //ans = max(0,ans);
         return ans;
         
