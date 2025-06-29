@@ -1,38 +1,44 @@
 class Solution {
   public:
-    bool checkPos(vector<int>& arr,int n, int maxStudent, int minPages) {
+    int checkPossible(vector<int>& arr, int maxStudents, int maxPages) {
+       
         int student = 1;
-        int totalPages = 0;
-        for(int i= 0;i<n;i++) {
-            totalPages+=arr[i];
-            if(totalPages>minPages) {
+        
+        int n = arr.size();
+        int pages = 0;
+        
+        for(int i = 0;i<n;i++) {
+            pages+=arr[i];
+            if(pages>maxPages) {
                 student++;
-                totalPages = arr[i];
+                pages = arr[i];
+                
             }
-            
-            if(student>maxStudent) return false;
+            if(student>maxStudents) return false;
         }
+        
         return true;
+        
     }
     int findPages(vector<int> &arr, int k) {
         // code here
         int n = arr.size();
+        int low = INT_MIN;
+        int high = 0;
         if(k>n) return -1;
         
-        int low = INT_MIN, high = 0;
-        int totalBooks = 0;
-        
-        for(int e: arr) {
-            totalBooks += e;
-            low = max(low,e);
+        for(int i = 0;i<n;i++) {
+           
+            high += arr[i];
+            low = max(low,arr[i]);
         }
-        high = totalBooks;
+        
         int ans = -1;
         
         while(low<=high) {
             int mid = low+(high-low)/2;
             
-            if(checkPos(arr,n,k,mid)) {
+            if(checkPossible(arr,k,mid)) {
                 ans = mid;
                 high = mid-1;
             }
@@ -40,7 +46,7 @@ class Solution {
                 low = mid+1;
             }
         }
-        return ans;
         
+        return ans;
     }
 };
