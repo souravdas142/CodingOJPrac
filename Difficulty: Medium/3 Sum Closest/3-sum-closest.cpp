@@ -4,25 +4,27 @@ class Solution {
   public:
     int closest3Sum(vector<int> &arr, int target) {
         // code here
-        vector<int>& nums = arr;
-        int n = nums.size();
-        sort(nums.begin(),nums.end());
-        int diff = INT_MAX;
+        
+        sort(arr.begin(),arr.end());
+        
+        int n = arr.size();
+        int i = 0;
         
         int ans = 0;
-        for(int i = 0 ;i<n;i++) {
-            int  j = i+1, k = n-1;
+        int mindiff = INT_MAX;
+        
+        while(i<n) {
+            int j = i+1, k = n-1;
             while(j<k) {
-                int sum = nums[i]+nums[j]+nums[k];
+                int sum = arr[i]+arr[j]+arr[k];
                 
-
-                if(abs(target-sum)<diff) {
-                    diff = abs(target-sum);
+                if(abs(target-sum)<mindiff) {
+                    mindiff = abs(target-sum);
                     ans = sum;
                 }
-
-                if(diff==abs(target-sum)) {
+                if(abs(target-sum)==mindiff) {
                     ans = max(ans,sum);
+                    
                 }
                 
                 if(sum>target) {
@@ -32,11 +34,12 @@ class Solution {
                     j++;
                 }
                 
-                
-                
-            }   
+            }
+            
+            i++;
         }
-
+        
         return ans;
+        
     }
 };
