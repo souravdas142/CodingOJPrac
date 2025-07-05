@@ -1,129 +1,70 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-
-
-// User function template for C++
-#define ull unsigned long long 
 class Solution {
   public:
+    string add(string& a, string& b) {
+        //cout<<a<<endl<<b<<endl;
+        if(a.size()==0 && b.size()==0) return "0";
+        if(a.size()==0) return b;
+        if(b.size()==0) return a;
+        
+        int n = a.size();
+        int m = b.size();
+        string ans(max(n,m)+2,'.');
+        int k = ans.size();
+        int u = n-1, d = m-1;
+        int j = k-1;
+        int carry = 0;
+        while(u>=0 && d>=0) {
+            int sum = (a[u]-'0')+(b[d]-'0')+carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans[j] = ('0'+sum);
+            j--;
+            u--;
+            d--;
+        }
+        while(u>=0) {
+            int sum = (a[u]-'0')+carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans[j] = '0'+sum;
+            u--;j--;
+        }
+        while(d>=0) {
+            int sum = (b[d]-'0')+carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans[j] = '0'+sum;
+            d--;j--;
+        }
+        if(carry) {
+            ans[j] = '0'+carry;
+            j--;
+        }
+        
+        return string(ans.begin()+j+1,ans.end());
+    }
     string minSum(vector<int> &arr) {
         // code here
-        sort(arr.begin(),arr.end());
-        int n = arr.size();
+        
+        priority_queue<int, vector<int>,greater<int> > pq;
+        
+        for(auto e: arr) pq.push(e);
         int i = 0;
-        string num1 = "";
-        string num2 = "";
-        string ans = "";
-        
-        while(i<n) {
-            
-            
-            //num1=(to_string(arr[i]))+num1;
-            //num1.insert(0,to_string(arr[i]));
-            num1+=(to_string(arr[i]));
-            //cout<<"arr["<<i<<"] = "<<arr[i]<<endl;
-            //cout<<"arr["<<i<<"+1] = "<<arr[i+1]<<endl;
-            if((i+1)<n) {
-                //num2 = (to_string(arr[i+1]))+num2;
-                //num2.insert(0,to_string(arr[i+1]));
-                num2+=to_string(arr[i+1]);
-            }
-            i+=2;
-        }
-        //cout<<num1<<endl;
-        //cout<<num2<<endl;
-        reverse(num1.begin(),num1.end());
-        reverse(num2.begin(),num2.end());
-        
-        
-        int c = 0;
-        int n1 = num1.size();
-        int n2 = num2.size();
-        i = 0;
-        int j = 0;
-        while(i<n1 && j<n2) {
-            int sum = (num1[i]-'0')+(num2[j]-'0')+c;
-            c = sum/10;
-            sum = sum%10;
-            ans+=to_string(sum);
-            
-            i++;j++;
-            
-        }
-        
-        while(i<n1) {
-            int sum = (num1[i]-'0')+c;
-            c = sum/10;
-            sum = sum%10;
-            ans+=to_string(sum);
-            
+        vector<string> num(2,"");
+        while(!pq.empty()) {
+            if(num[i].size()==0 && pq.top()!=0)
+                num[i] += ('0'+pq.top());
+            else if(num[i].size()>0)
+                num[i] += ('0'+pq.top());
+            pq.pop();
             i++;
+            i = i%2;
+            
         }
         
-        while(j<n2) {
-            int sum = (num2[j]-'0')+c;
-            c = sum/10;
-            sum = sum%10;
-            ans+=to_string(sum);
-            j++;
-        }
-        
-        if(c) {
-            ans+=to_string(c);
-        }
-        //cout<<ans<<endl;
-        int sz = ans.size()-1;
-        while(sz>=0) {
-            if(ans[sz]-'0'!=0) break;
-            ans.pop_back();
-            sz--;
-        }
-        
-        reverse(ans.begin(),ans.end());
-        
-        
-        
-        
-        // 5 3 0 7 4
-        // 0 3 4 5 7
-        // 0 4 7
-        // 3 5
-        
+        string ans = "";
+        ans = add(num[0],num[1]);
         return ans;
-        
         
     }
 };
-
-
-
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore();
-    while (t--) {
-        vector<int> a;
-        string input;
-        getline(cin, input);
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            a.push_back(number);
-        }
-
-        Solution ob;
-        string ans = ob.minSum(a);
-        cout << ans << endl;
-        cout << "~" << endl;
-    }
-    return 0;
-}
-
-// } Driver Code Ends
