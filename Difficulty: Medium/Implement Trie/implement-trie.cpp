@@ -1,85 +1,94 @@
 // User function template for C++
 
-
 class Node {
+    private:
+        vector<Node*> links;
+        bool word;
     public:
-        vector<Node*> nodes;
-        bool isWordExistSoFar;
         Node() {
-            nodes.resize(26,nullptr);
-            isWordExistSoFar = false;
+            links.resize(26,nullptr);
+            word = false;
         }
+        
+        bool isWord() {
+            return word;
+        }
+        
+        void setWord() {
+            word = true;
+        }
+        
+        bool isContainsKey(char ch) {
+            int pos = ch-'a';
+            return links[pos]!=nullptr;
+        }
+        
+        void put(char ch, Node* setter) {
+            links[ch-'a'] = setter;
+        }
+        
+        Node* getLink(char ch) {
+            return links[ch-'a'];
+        }
+        
 };
 
 class Trie {
+  private:
+    Node* root;
+    
   public:
-    Node *trie;
+
     Trie() {
         // implement Trie
-        trie = new Node();
+        root = new Node();
     }
-    void insertInTrie(string word,int index, int n, Node* head) {
-        
-        if(index>=n) {
-            head->isWordExistSoFar = true;
-            return;
-        }
-        
-        int pos = word[index]-'a';
-        if(head->nodes[pos]==nullptr) {
-            head->nodes[pos] = new Node();
-        }
-        
-        insertInTrie(word,index+1,n,head->nodes[pos]);
-        
-    }
-    
+
     void insert(string &word) {
         // insert word into Trie
-        Node* head = trie;
-        int index = 0;
+        Node* node = root;
         int n = word.size();
-        insertInTrie(word,index,n,head);
-    }
-    
-    bool searchInTrie(string word,int index, int n,Node* head) {
-        if(index>=n) {
-            if(head->isWordExistSoFar==true) return true;
-            return false;
+        
+        for(int i = 0;i<n;i++) {
+            
+            if(!node->isContainsKey(word[i])) {
+                Node* link = new Node();
+                node->put(word[i],link);
+            }
+            node = node->getLink(word[i]);
         }
-        int pos = word[index]-'a';
-        if(head->nodes[pos]==nullptr) return false;
-        
-        
-        
-        return searchInTrie(word, index+1,n, head->nodes[pos]);
+        node->setWord();
     }
-    
+
     bool search(string &word) {
         // search word in the Trie
-        Node* head = trie;
-        int index = 0;
-        int n = word.size();
-        return searchInTrie(word,index,n,head);
-    }
-    
-    bool isPrefixInTrie(string word,int index,int n, Node* head) {
-        if(index>=n) {
-            return true;
-        }
-        int pos = word[index]-'a';
-        if(head->nodes[pos]==nullptr) return false;
-        
-        
-       
-        return isPrefixInTrie(word,index+1,n, head->nodes[pos]);
+         Node* node = root;
+         int n = word.size();
+         
+         for(int i = 0;i<n;i++) {
+             if(!node->isContainsKey(word[i])) {
+                 return false;
+                 
+             }
+             node = node->getLink(word[i]);
+             
+         }
+         return node->isWord();
     }
 
     bool isPrefix(string &word) {
         // search prefix word in the Trie
-        Node* head = trie;
-        int index = 0;
-        int n = word.size();
-        return isPrefixInTrie(word,index,n,head);
+         Node* node = root;
+         int n = word.size();
+         
+         for(int i = 0;i<n;i++) {
+             if(!node->isContainsKey(word[i])) {
+                 return false;
+                 
+             }
+             node = node->getLink(word[i]);
+             
+        }
+        return true;
     }
 };
