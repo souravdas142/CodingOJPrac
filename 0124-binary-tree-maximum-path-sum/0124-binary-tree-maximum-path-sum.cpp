@@ -15,7 +15,7 @@ public:
         if(root== nullptr) return 0;
         int left = max(0,dfs(root->left,ans));
         int right = max(0,dfs(root->right,ans));
-        ans = max(ans,left+root->val+right);
+        ans = max(ans,max(left+root->val,max(right+root->val,left+right+root->val)));
         return max(root->val,max(left+root->val,right+root->val));
     }
     int maxPathSum(TreeNode* root) {
