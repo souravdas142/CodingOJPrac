@@ -1,53 +1,62 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
 
-// } Driver Code Ends
+#define vvi vector<vector<char>>
+#define vvb vector<vector<bool>>
+
+
+
 class Solution {
-    
   private:
-  
-    bool check(vector<vector<char>> &grid,vector<vector<bool>>& visited,int n,int m,int i, int j) {
-        if(i<n && j<m && i>=0 && j>=0 && grid[i][j]=='1' && visited[i][j]==false) return true;
+    vector<int> dirx = {0,  0,  1,  -1,  1,  -1,  1,  -1};
+    vector<int> diry = {1,  -1,  0,  0,  1,  -1,  -1,  1};
+                    // UP   d    ryt Lft UR  DL   DR  UL
+                    
+    bool checkValid(int row, int col, vvi& grid, vvb& visited) {
+        
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        if(row>=0 && row<n && col>=0 && col<m && grid[row][col]!='W' && visited[row][col]==false) return true;
         return false;
+        
     }
-    
-    void bfs(vector<vector<char>> &grid, vector<vector<bool>>& visited, int n, int m, int i, int j) {
+    void dfs(vvi& grid, vvb& visited, int row, int col) {
         
-        deque<pair<int,int>> dq;
-        vector<int> dx = {1,0,-1,1,1,-1,-1,0};
-        vector<int> dy = {0,1,0,-1,1,-1,1,-1};
-        dq.push_back({i,j});
-        visited[i][j]=true;
+        visited[row][col] = true;
         
-        while(!dq.empty()) {
-            pair<int,int> prxy = dq.front();
-            dq.pop_front();
-            
-            for(int k = 0;k<8;k++) {
-                int newi = prxy.first+dx[k];
-                int newj = prxy.second+dy[k];
-                if(check(grid,visited,n,m,newi,newj)) {
-                    dq.push_back({newi,newj});
-                    visited[newi][newj] = true;
-                }
+        for(int i = 0;i<8;i++) {
+            int newRow = row+dirx[i];
+            int newCol = col+diry[i];
+            if(checkValid(newRow,newCol,grid,visited)) {
+                dfs(grid,visited,newRow,newCol);
             }
         }
+        
+        
+        
     }
     
   public:
-    // Function to find the number of islands.
-    int numIslands(vector<vector<char>>& grid) {
+    int countIslands(vector<vector<char>>& grid) {
         // Code here
         int n = grid.size();
-        int m = grid[0].size();
-        vector<vector<bool> > visited(n,vector<bool>(m,false));
-        int ans = 0;
-        for(int i = 0;i<n;i++) {
+        int m  = grid[0].size();
+        vector<vector<bool>> visited(n,vector<bool>(m,false));
+        
+        for(int i  = 0;i<n;i++) {
             for(int j = 0;j<m;j++) {
-                if(!visited[i][j] && grid[i][j]=='1') {
+                if(grid[i][j]=='W') {
+                    visited[i][j] = true;
+                }
+            }
+        }
+        
+        int ans = 0;
+        
+        for(int i = 0;i<n;i++) {
+            for(int j  = 0;j<m;j++) {
+                if(visited[i][j]==false) {
                     ans++;
-                    bfs(grid,visited,n,m,i,j);
+                    dfs(grid,visited,i,j);
                 }
             }
         }
@@ -56,24 +65,3 @@ class Solution {
         
     }
 };
-
-//{ Driver Code Starts.
-int main() {
-    int tc;
-    cin >> tc;
-    while (tc--) {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<char>> grid(n, vector<char>(m, '#'));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                cin >> grid[i][j];
-            }
-        }
-        Solution obj;
-        int ans = obj.numIslands(grid);
-        cout << ans << '\n';
-    }
-    return 0;
-}
-// } Driver Code Ends
