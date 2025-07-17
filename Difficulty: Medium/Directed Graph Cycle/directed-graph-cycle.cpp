@@ -1,87 +1,41 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
 
-// } Driver Code Ends
+#define graph_t vector<vector<int>>
+#define visit_t vector<bool>
+
 class Solution {
+  public:
     
-    bool checkCycle(vector<int> adj[],vector<bool>& visited,vector<bool>& pathvisited,int parent) {
+    bool dfs(graph_t& adj, visit_t visited, int u, int parent) {
+        visited[u] = true;
         
-        visited[parent] = true;
-        pathvisited[parent]=true;
-        
-        for(auto child:adj[parent]) {
-            
-            //int child = adj[parent][j];
-            
-            
-            
-            
-            if(!visited[child]) {
-
+        for(auto& v: adj[u]) {
+            if(!visited[v]) {
                 
-                
-                if(checkCycle(adj,visited,pathvisited,child)==true) {
-                    return true;
-                }
-                
-                
-                
+                if(dfs(adj, visited, v, u)==true) return true;
             }
-            else if(pathvisited[child]==true) {
+            else {
                 return true;
-                
             }
         }
-        pathvisited[parent] = false;
         return false;
     }
-  public:
-    // Function to detect cycle in a directed graph.
-    bool isCyclic(int V, vector<int> adj[]) {
+  
+    bool isCyclic(int V, vector<vector<int>> &edges) {
         // code here
+        visit_t visited(V,0);
+        graph_t adj(V);
         
-       // vector<vector<int> > adjlist(V);
-        
-       
-        
-        
-        vector<bool> visited(V,false);
-        vector<bool> pathvisited(V,false);
+        int n = edges.size();
+        for(int i = 0 ;i<n;i++) {
+            adj[edges[i][0]].push_back(edges[i][1]);
+        }
         
         for(int i = 0;i<V;i++) {
             if(!visited[i]) {
-                if(checkCycle(adj,visited,pathvisited,i)) return true;
+                int parent = i;
+                if(dfs(adj,visited,i,parent)==true) return true;
             }
         }
-        
         return false;
     }
 };
-
-//{ Driver Code Starts.
-
-int main() {
-
-    int t;
-    cin >> t;
-    while (t--) {
-        int V, E;
-        cin >> V >> E;
-
-        vector<int> adj[V];
-
-        for (int i = 0; i < E; i++) {
-            int u, v;
-            cin >> u >> v;
-            adj[u].push_back(v);
-        }
-
-        Solution obj;
-        cout << obj.isCyclic(V, adj) << "\n";
-    }
-
-    return 0;
-}
-
-// } Driver Code Ends
