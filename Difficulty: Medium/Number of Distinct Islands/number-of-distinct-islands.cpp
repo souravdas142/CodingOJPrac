@@ -1,95 +1,62 @@
-//{ Driver Code Starts
-// Initial Template for C++
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 // User function Template for C++
-#define vvi vector<vector<int> >
-#define vi vector<int>
-#define vvb vector<vector<bool> >
-#define vb vector<bool>
-#define pii pair<int,int>
-#define stvpii set<vector<pair<int,int> > >
-#define vpii vector<pair<int,int> >
-
-vector<int> dx = {1,0,-1,0};
-vector<int> dy = {0,1,0,-1};
+#define graph_t vector<vector<int>> 
+#define visit_t vector<vector<bool>>
+#define un set<vector<pair<int,int>>>
+#define bs pair<int,int>
+#define vpii vector<pair<int,int>>
 
 class Solution {
-  private:
-    bool checkPossible(vvi& grid,vvb& visited,int i,int j,int n,int m) {
-        if(i>=0 && j>=0 && i<n && j<m && !visited[i][j] && grid[i][j]==1) return true;
+  public:
+    vector<int> dirx = {0,0,1,-1};
+    vector<int> diry = {1,-1,0,0};
+    
+    bool valid(graph_t& grid, visit_t& visited,int i, int j) {
+        int n = grid.size();
+        int m = grid[0].size();
+        if(i>=0 && i<n && j>=0 && j<m && visited[i][j]==false && grid[i][j]==1) {
+            return true;
+        }
         return false;
     }
     
-    vpii runBfs(vvi& grid,vvb& visited,int bi,int bj,int n,int m) {
-        visited[bi][bj] = true;
-        deque<pii> dq;
-        dq.push_back({bi,bj});
-        vpii ans;
+    void dfs(graph_t& grid, visit_t& visited,vpii& path,bs& base,  int i, int j ) {
+       
+        int n = grid.size();
+        int m = grid[0].size();
+       
+        path.push_back({i-base.first,j-base.second});
+        visited[i][j] = true;
         
-        while(!dq.empty()) {
-            pii pr = dq.front();
-            dq.pop_front();
-            
-            ans.push_back({pr.first-bi,pr.second-bj});
-            
-            for(int i = 0;i<4;i++) {
-                int nrow = pr.first+dx[i];
-                int ncol = pr.second+dy[i];
-                if(checkPossible(grid,visited,nrow,ncol,n,m)) {
-                    dq.push_back({nrow,ncol});
-                    visited[nrow][ncol]=true;
-                }
+        for(int k = 0; k<4; k++) {
+            int newi = i+dirx[k];
+            int newj = j+diry[k];
+            if(valid(grid, visited,newi, newj)) {
+                
+                dfs(grid,visited, path,base, newi, newj);
             }
         }
-        return ans;
+        
+        
     }
-  public:
     int countDistinctIslands(vector<vector<int>>& grid) {
         // code here
         int n = grid.size();
-        int m = grid[0].size();
-        vvb visited(n,vb(m,false));
+        int m  = grid[0].size();
         
-         stvpii stpath;
+        visit_t visited(n,vector<bool>(m,0));
+        set<vector<pair<int,int>>> uniq;
         
-        for(int i = 0;i<n;i++) {
-            for(int j = 0;j<m;j++) {
-                
-                if(!visited[i][j] && grid[i][j]==1) {
-                    stpath.insert(runBfs(grid,visited,i,j,n,m));
+        for(int i = 0 ;i<n;i++) {
+            for(int j  = 0;j<m;j++) {
+                if(grid[i][j]==1 && visited[i][j]==0) {
+                    bs base({i,j});
+                    vector<pair<int,int>> path;
+                    dfs(grid,visited,path,base,i,j);
+                   
+                    uniq.insert(path);
                 }
-                
             }
         }
-        
-        int ans = stpath.size();
-        return ans;
-        
+        return uniq.size();
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-
-    int t;
-    cin >> t;
-    while (t--) {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<int>> grid(n, vector<int>(m));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                cin >> grid[i][j];
-            }
-        }
-        Solution obj;
-        cout << obj.countDistinctIslands(grid) << endl;
-    }
-}
-// } Driver Code Ends
