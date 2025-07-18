@@ -1,88 +1,52 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
 
-// } Driver Code Ends
-class Solution
-{
-	public:
-	//Function to return list containing vertices in Topological order. 
-	vector<int> topoSort(int V, vector<int> adj[]) 
-	{
-	    // code here
-	    vector<int> indeg(V,0);
-	    
-	    for(int i = 0;i<V;i++) {
-	        for(auto a:adj[i]) {
-	            indeg[a]++;
-	        }
-	    }
-	    queue<int> que;
-	    for(int i = 0;i<V;i++) {
-	        if(indeg[i] == 0) que.push(i);
-	    }
-	    vector<int> topans;
-	    while(!que.empty()) {
-	        int node = que.front();
-	        que.pop();
-	        topans.push_back(node);
-	        for(auto a:adj[node]) {
-	            indeg[a]--;
-	            if(indeg[a]==0) que.push(a);
-	            
-	        }
-	    }
-	    return topans;
-	    
-	}
-};
+#define graph_t vector<vector<int>>
+#define visit_t vector<bool>
 
-//{ Driver Code Starts.
-
-/*  Function to check if elements returned by user
-*   contains the elements in topological sorted form
-*   V: number of vertices
-*   *res: array containing elements in topological sorted form
-*   adj[]: graph input
-*/
-int check(int V, vector <int> &res, vector<int> adj[]) {
-    
-    if(V!=res.size())
-    return 0;
-    
-    vector<int> map(V, -1);
-    for (int i = 0; i < V; i++) {
-        map[res[i]] = i;
+ostream& operator<<(ostream& print,vector<int>& tmp) {
+    for(auto& e: tmp) {
+        print<<e<<" ";
     }
-    for (int i = 0; i < V; i++) {
-        for (int v : adj[i]) {
-            if (map[i] > map[v]) return 0;
-        }
-    }
-    return 1;
+    return print;
 }
 
-int main() {
-    int T;
-    cin >> T;
-    while (T--) {
-        int N, E;
-        cin >> E >> N;
-        int u, v;
-
-        vector<int> adj[N];
-
-        for (int i = 0; i < E; i++) {
-            cin >> u >> v;
-            adj[u].push_back(v);
-        }
+class Solution {
+  public:
+    bool dfs(graph_t& adj, visit_t& visited,visit_t& dfsvisited,int u, vector<int>& ans) {
+        visited[u] = true;
+        dfsvisited[u]=true;
         
-        Solution obj;
-        vector <int> res = obj.topoSort(N, adj);
-
-        cout << check(N, res, adj) << endl;
+        for(auto& v:adj[u]) {
+            if(!visited[v]) {
+                dfs(adj,visited,dfsvisited, v, ans);
+            }
+            // else if(dfsvisited[v]){
+            //     return true;
+            // }
+        }
+        ans.push_back(u);
+        dfsvisited[u] = false;
+        return false;
+        
     }
-    
-    return 0;
-}
-// } Driver Code Ends
+    vector<int> topoSort(int V, vector<vector<int>>& edges) {
+        // code here
+        graph_t adj(V);
+        visit_t visited(V,0);
+        int n = edges.size();
+        
+        for(int i = 0;i<n;i++) {
+            adj[edges[i][0]].push_back(edges[i][1]);
+        }
+        vector<int> ans;
+        for(int i = 0;i<V;i++) {
+            if(!visited[i]) {
+                visit_t dfsvisited(V,0);
+                dfs(adj,visited,dfsvisited,i,ans);
+                
+            }
+        }
+        reverse(ans.begin(),ans.end());
+        //cout<<ans<<endl;
+        return ans;
+    }
+};
