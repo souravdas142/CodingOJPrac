@@ -1,74 +1,61 @@
-
-#define graph_t vector<vector<int>>
-#define visit_t vector<vector<bool>>
-
-class cell {
-    public:
-        int i;
-        int j;
-        int dist;
-        cell() {
-            i = 0;
-            j = 0;
-            dist = 0;
-        }
-        cell(int a, int b, int c=0):i(a),j(b),dist(c) {}
-};
-
+#define vvi vector<vector<int>>
+#define vvb vector<vector<bool>>
+#define node pair<pair<int,int>,int>
 class Solution {
   public:
+    // Function to find distance of nearest 1 in the grid for each cell.
+    
     vector<int> dirx = {0,0,1,-1};
     vector<int> diry = {1,-1,0,0};
-    
-    bool valid(int i, int j,int n, int m, graph_t& grid,visit_t& visited) {
-        if(i>=0 && i<n && j>=0 && j<m && visited[i][j]==false)
-            return true;
+    bool check(node& child,vvi& grid, int n, int m,vvb& visited) {
+        int x = child.first.first;
+        int y = child.first.second;
+        if(x>=0 && x<n && y>=0 && y<m && visited[x][y]==false && grid[x][y]==0) return true;
         return false;
     }
-
-  
-    // Function to find distance of nearest 1 in the grid for each cell.
-    vector<vector<int>> nearest(vector<vector<int>>& grid) {
+    void bfs(vvi& grid, int n, int m, queue<node>& que,vvi& dist, vvb& visited) {
+        
+        
+        
+        
+        while(!que.empty()) {
+            pair<pair<int,int>,int> parent = que.front();
+            que.pop();
+            for(int i  = 0;i<4;i++) {
+                pair<pair<int,int>,int> child({{parent.first.first+dirx[i],parent.first.second+diry[i]},parent.second+1});
+                if(check(child,grid,n,m,visited)) {
+                    
+                    que.push(child);
+                    dist[child.first.first][child.first.second] = child.second;
+                    visited[child.first.first][child.first.second] = true;
+                }
+            }
+        }
+        
+    }
+    
+    vvi nearest(vvi& grid) {
         // Code here
+        
         int n = grid.size();
         int m = grid[0].size();
-        visit_t visited(n,vector<bool>(m,false));
-        graph_t gridAns(n,vector<int>(m,0));
         
-     
+        vvi dist(n,vector<int>(m,0));
+        vvb visited(n,vector<bool>(m,false));
+        queue<node> que;
         
-        queue<cell> que;
-        
-        for(int i = 0;i<n;i++) {
+        for(int i  = 0;i<n;i++) {
             for(int j  = 0;j<m;j++) {
                 if(grid[i][j]==1) {
-                    que.push(cell(i,j));
+                    que.push({{i,j},0});
                     visited[i][j] = true;
                 }
             }
         }
         
-        while(!que.empty()) {
-            cell cl = que.front();
-            que.pop();
-            
-            for(int i = 0;i<4;i++) {
-                
-                cell newCell(cl.i+dirx[i],cl.j+diry[i]);
-                
-                if(valid(newCell.i,newCell.j,n,m,grid,visited)) {
-                   
-                    newCell.dist = cl.dist+1;
-                    gridAns[newCell.i][newCell.j] = cl.dist+1;
-                    
-                    visited[newCell.i][newCell.j] = true;
-                    que.push(newCell);
-                }
-            }
-            
-            
-        }
-       
-        return gridAns;
+        bfs(grid,n,m, que, dist,visited);
+        
+        return dist;
+        
     }
 };
