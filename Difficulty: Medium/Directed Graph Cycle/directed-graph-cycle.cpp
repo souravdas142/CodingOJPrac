@@ -1,41 +1,35 @@
-
 #define graph_t vector<vector<int>>
-#define visit_t vector<bool>
 
 class Solution {
   public:
-    
-    bool dfs(graph_t& adj, visit_t visited, int u, int parent) {
-        visited[u] = true;
-        
+    bool dfs(graph_t& adj, int u, vector<int>& visited) {
+        visited[u] = 1;
         for(auto& v: adj[u]) {
             if(!visited[v]) {
-                
-                if(dfs(adj, visited, v, u)==true) return true;
+                if(dfs(adj,v,visited)==false) return false;;
             }
-            else {
-                return true;
+            else if(visited[v]==1) {
+                return false;
             }
         }
-        return false;
+        visited[u] = 2;
+        return true;
     }
-  
     bool isCyclic(int V, vector<vector<int>> &edges) {
         // code here
-        visit_t visited(V,0);
         graph_t adj(V);
-        
-        int n = edges.size();
-        for(int i = 0 ;i<n;i++) {
-            adj[edges[i][0]].push_back(edges[i][1]);
+        for(auto& vec: edges) {
+            adj[vec[0]].push_back(vec[1]);
         }
         
-        for(int i = 0;i<V;i++) {
+        vector<int> visited(V,false);
+        for(int i  = 0;i<V;i++) {
             if(!visited[i]) {
-                int parent = i;
-                if(dfs(adj,visited,i,parent)==true) return true;
+                if(dfs(adj,i,visited)==false) return true;
             }
+            
         }
         return false;
+        
     }
 };
