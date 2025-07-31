@@ -1,83 +1,73 @@
 class Solution {
 public:
-    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
-        unordered_map<string,int> wordlevel;
-        unordered_set<string> usets(wordList.begin(),wordList.end());
-        vector<vector<string > > ans;
-        if(!usets.count(endWord)) return ans;
-        int n = beginWord.length();
-        queue<string> que;
-        que.push(beginWord);
-        wordlevel[beginWord] = 0;
-        int minsteps = 0;
-        usets.erase(beginWord);
-
-        while(!que.empty()) {
-            string word = que.front();
-            que.pop();
-            if(word == endWord) {
-                minsteps = wordlevel[word];
-                break;
-            }
-
-
-            for(int i= 0;i<n;i++) {
-                string modword = word;
-                for(char ch = 'a';ch<='z';ch++) {
-                    modword[i] = ch;
-                    if(modword==word) continue;
-                    
-                    if(usets.count(modword)) {
-                        usets.erase(modword);
-                        que.push(modword);
-                        wordlevel[modword] = wordlevel[word]+1;
-                    }
-
-                }
-
-            }
-
-
-
-
-
-        }
-
+    void dfs(unordered_map<string,int>& dist,string targetWord, string startWord,vector<string> res, vector<vector<string>>& ans) {
         
 
-        
-        vector<string> res;
-        int level = minsteps;
-        res.push_back(endWord);
-        
-
-        findSequence(wordlevel,n,level,res,ans);
-
-        return ans;
-
-    }
-    void findSequence(unordered_map<string,int>& wordlevel,int n,int level,vector<string> res, vector<vector<string> >& ans) {
-
-        if(level<=0) {
-          //  res.push_back(beginWord);
+        if(targetWord==startWord) {
             reverse(res.begin(),res.end());
             ans.push_back(res);
+            reverse(res.begin(),res.end());
             return;
         }
-        string word = res.back();
 
-        for(int i = 0;i<n;i++) {
-            string modword = word;
-            for(char ch='a';ch<='z';ch++) {
-                modword[i] = ch;
-                if(modword==word) continue;
-                if(wordlevel.count(modword) && wordlevel[modword]<wordlevel[word]) {
-                    res.push_back(modword);
-                    findSequence(wordlevel,n,level-1,res,ans);
+        string v = startWord;
+        int sz = v.size();
+        for(int i = 0;i<sz;i++) {
+            for(char ch = 'a';ch<='z';ch++) {
+                v[i] = ch;
+                if(dist.count(v) && dist[v]+1 == dist[startWord]) {
+                    res.push_back(v);
+                    dfs(dist,targetWord,v,res,ans);
+
                     res.pop_back();
                 }
             }
+            v = startWord;
         }
 
+    }
+    vector<vector<string>> findLadders(string startWord, string targetWord, vector<string>& wordList) {
+        unordered_set<string> dict(wordList.begin(),wordList.end());
+        unordered_map<string,int> dist;
+        vector<vector<string>> ans;
+        
+        dist[startWord] = 1;
+
+
+        
+       
+        if(dict.count(targetWord)==0) return ans;
+       
+        
+        queue<string> que;
+        que.push(startWord);
+        dict.erase(startWord);
+        while(!que.empty()) {
+            string u = que.front();
+            
+            que.pop();
+            if(targetWord == u) break;
+            int len = u.length();
+            for(int i = 0;i<len;i++) {
+                string temp = u;
+                for(char ch = 'a';ch<='z';ch++) {
+                    if(ch==u[i]) continue;
+                    temp[i] = ch;
+                    if(dict.count(temp)!=0) {
+                    
+                            dist[temp] = dist[u]+1;
+                            dict.erase(temp);
+                            que.push(temp);
+                         
+                        
+                    }
+                }
+            }
+            
+        }
+        vector<string> res;
+        res.push_back(targetWord);
+        dfs(dist,startWord,targetWord,res,ans);
+        return ans;
     }
 };
