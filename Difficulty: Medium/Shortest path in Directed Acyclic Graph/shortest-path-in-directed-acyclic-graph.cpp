@@ -1,102 +1,67 @@
-//{ Driver Code Starts
-// Initial Template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-// } Driver Code Ends
 // User function Template for C++
-
-#define vvpii vector<vector<pair<int,int> > >
-#define vi vector<int>
-#define vb vector<bool>
 class Solution {
-  private:
-    bool dfs(vvpii& graph,vb& visited,stack<int>& st,int source) {
-        visited[source] = true;
-        for(auto pr:graph[source]) {
-            
-            if(!visited[pr.first]) {
-                dfs(graph,visited,st,pr.first);
-            }
-            
-        }
-        st.push(source);
-    }
   public:
-     vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
-        // code here
-        
-        vvpii graph(n);
-        vb visited(n,false);
-        vi dist(n,INT_MAX);
-        stack<int> st;
-        vi ans;
-        
-        for(int i = 0;i<m;i++) {
-            graph[edges[i][0]].push_back({edges[i][1],edges[i][2]});
-            
-        }
-        
-        for(int i = 0;i<n;i++) {
-            if(!visited[i]) {
-               
-                dfs(graph,visited,st,i);
+    void topoSort(vector<vector<pair<int,int>>> &adj, int u, vector<bool>& visited, stack<int>& topo) {
+        visited[u] = true;
+        for(auto& v:adj[u]) {
+            if(!visited[v.first]) {
+                topoSort(adj,v.first,visited,topo);
             }
         }
+        topo.push(u);
+    }
+    vector<int> shortestPath(int V, int E, vector<vector<int>>& edges) {
+        // code here
+        vector<vector<pair<int,int>>> adj(V);
+        vector<int> dist(V,INT_MAX);
+        dist[0] = 0; // source is always 0;
+        vector<int> indeg(V,0);
+        for(auto& vec: edges) {
+            adj[vec[0]].push_back({vec[1],vec[2]});
+            indeg[vec[1]]++;
+        }
         
+        queue<int> que;
         
-         dist[0] = 0;
-         
-         while(!st.empty() && st.top()!=0) st.pop();
-         
-        while(!st.empty()) {
-            int node = st.top();
-            st.pop();
-            for(auto adjpr:graph[node]) {
-                
-                int v = adjpr.first;
-                int wt = adjpr.second;
-                
-                if(dist[node]+wt<dist[v]) {
-                    dist[v] = dist[node]+wt;
+        // for(int i  = 0;i<V;i++) {
+        //     if(indeg[i]==0) {
+        //         que.push(i);
+        //         //dist[i] = 0;
+        //     }
+        // }
+        que.push(0);
+        stack<int> topo;
+        
+        // while(!que.empty()) {
+        //     int u = que.front();
+        //     que.pop();
+        //     topo.push(u);
+        //     for(auto& v: adj[u]) {
+        //         indeg[v.first]--;
+        //         if(indeg[v.first]==0) {
+        //             que.push(v.first);
+        //         }
+        //     }
+        // }
+        vector<bool> visited(V,false);
+       topoSort(adj,0,visited,topo);
+        
+        while(!topo.empty()) {
+            int u = topo.top();
+            //cout<<u<<endl;
+            topo.pop();
+            for(auto& v :adj[u]) {
+                if(dist[u]+v.second<dist[v.first]) {
+                    dist[v.first] = dist[u]+v.second;
                 }
             }
         }
         
-        for(int i = 0;i<n;i++) {
-            if(dist[i]==INT_MAX) dist[i] = -1;
+        for(int i  = 0;i<V;i++) {
+            if(dist[i]==INT_MAX) {
+                dist[i] = -1;
+            }
         }
-        
         return dist;
-        
     }
 };
-
-
-//{ Driver Code Starts.
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<int>> edges;
-        for(int i=0; i<m; ++i){
-            vector<int> temp;
-            for(int j=0; j<3; ++j){
-                int x; cin>>x;
-                temp.push_back(x);
-            }
-            edges.push_back(temp);
-        }
-        Solution obj;
-        vector<int> res = obj.shortestPath(n, m, edges);
-        for (auto x : res) {
-            cout << x << " ";
-        }
-        cout << "\n";
-    }
-}
-
-// } Driver Code Ends
