@@ -1,44 +1,41 @@
-    int dx[] = {0, 0,1,-1,-1, 1,-1,1};
-    int dy[]=  {1,-1,0, 0, 1,-1,-1,1};
+
+#define ppii pair<int,pair<int,int>>
+#define vvi vector<vector<int>>
 
 class Solution {
-private:
-    bool checkValidity(vector<vector<int> >& grid,int x,int y, int n) {
-        if(x>=0 && y>=0 && x<n && y<n && grid[x][y]==0) return true;
+public:
+    bool valid(ppii& v, vvi& grid, int n,vvi& dist) {
+        int x = v.second.first;
+        int y = v.second.second;
+        int distv = v.first;
+        if(x>=0 && x<n && y>=0 && y<n && grid[x][y]==0 && distv<dist[x][y]) return true;
         return false;
     }
-public:
-
+    vector<int> dirx = {0,0,1,-1,1,1,-1,-1};
+    vector<int> diry = {1,-1,0,0,1,-1,-1,1};
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-
         int n = grid.size();
-        priority_queue<pair<int,pair<int,int> >,vector<pair<int,pair<int,int>> >, greater<pair<int,pair<int,int> > > > pq;
-
-        if(grid[0][0]==1 || grid[n-1][n-1]==1) return -1;
-        if(n==1) return 1;
-        vector<vector<int> > dist(n,vector<int>(n,INT_MAX));
-        dist[0][0] = 0;
-        pq.push({1,{0,0}});
+        priority_queue<ppii,vector<ppii>, greater<ppii>> pq;
+        int sr = 0, sc = 0;
+        int dr = n-1, dc = n-1;
+        if(grid[sr][sc]==1 || grid[dr][dc]==1) return -1;
+        pq.push({0,{sr,sc}});
+        vector<vector<int>> dist(n,vector<int>(n,INT_MAX));
+        dist[sr][sc] = 0;
 
         while(!pq.empty()) {
-            pair<int,pair<int,int> > unodepr = pq.top();
+            ppii u = pq.top();
             pq.pop();
-
-            int distu = unodepr.first;
-            pair<int,int> cell = unodepr.second;
-            for(int i =0;i<8;i++) {
-                int newCellx = cell.first+dx[i];
-                int newCelly = cell.second+dy[i];
-                if(checkValidity(grid,newCellx,newCelly,n)) {
-                    if(distu+1<dist[newCellx][newCelly]) {
-                        dist[newCellx][newCelly] = distu+1;
-                        pq.push({distu+1,{newCellx,newCelly}});
-                    }
+            if(u.second.first == dr && u.second.second == dc) break;
+            for(int i = 0;i<8;i++) {
+                ppii v({u.first+1,{u.second.first+dirx[i],u.second.second+diry[i]}});
+                if(valid(v,grid,n,dist)) {
+                    pq.push(v);
+                    dist[v.second.first][v.second.second] = v.first;
                 }
             }
         }
-
-        return dist[n-1][n-1];
         
+        return (dist[dr][dc]==INT_MAX)?-1:dist[dr][dc]+1;
     }
 };
