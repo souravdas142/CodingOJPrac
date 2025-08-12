@@ -56,7 +56,13 @@ public:
             vi temp(m,0);
             int prev = 0;
             for(int j = 0;j<m;j++) {
-                int cur = min(prev+grid[i][j],dp[j]+grid[i][j]);
+
+                int cur = INT_MAX;
+                if(j==0) cur = dp[j]+grid[i][j];
+                else {
+                    cur = min(prev+grid[i][j],dp[j]+grid[i][j]);
+                }
+
                 temp[j] = cur;
                 prev = cur;
             }
