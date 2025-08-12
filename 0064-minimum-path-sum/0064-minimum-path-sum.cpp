@@ -41,13 +41,38 @@ public:
         return dp[n-1][m-1];
     }
 
+    int spaceOpt(vvi& grid, int r, int c) {
+        int n  = grid.size();
+        int m = grid[0].size();
+
+        vi dp(m,0);
+        dp[0] = grid[r][c];
+
+        for(int j = 1;j<m;j++) {
+            dp[j] = dp[j-1]+grid[0][j];
+        }
+
+        for(int i = 1;i<n;i++) {
+            vi temp(m,0);
+            int prev = 0;
+            for(int j = 0;j<m;j++) {
+                int cur = min(prev+grid[i][j],dp[j]+grid[i][j]);
+                temp[j] = cur;
+                prev = cur;
+            }
+            dp = temp;
+        }
+        return dp[m-1];
+    }
+
     int minPathSum(vector<vector<int>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
         // vvi dp(n,vi(m,-1));
         // return dfs(grid,0,0,dp);
-        vvi dp(n,vi(m,0));
-        return tabulation(grid,0,0,dp);
+        // vvi dp(n,vi(m,0));
+        // return tabulation(grid,0,0,dp);
+        return spaceOpt(grid,0,0);
 
     }
 };
