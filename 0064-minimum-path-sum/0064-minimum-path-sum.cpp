@@ -25,10 +25,29 @@ public:
         }
         return dp[r][c] = ans;
     }
+
+
+    int tabulation(vvi& grid, int r, int c, vvi& dp) {
+        dp[r][c] = grid[r][c];
+        int n = grid.size();
+        int m = grid[0].size();
+        for(int i  = 0;i<n;i++) {
+            
+            for(int j  = 0;j<m;j++) {
+                if(i==r && j==c) continue;
+                dp[i][j] = min((i-1>=0)?dp[i-1][j]+grid[i][j]:INT_MAX,(j-1>=0)?dp[i][j-1]+grid[i][j]:INT_MAX);
+            }
+        }
+        return dp[n-1][m-1];
+    }
+
     int minPathSum(vector<vector<int>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
-        vvi dp(n,vi(m,-1));
-        return dfs(grid,0,0,dp);
+        // vvi dp(n,vi(m,-1));
+        // return dfs(grid,0,0,dp);
+        vvi dp(n,vi(m,0));
+        return tabulation(grid,0,0,dp);
+
     }
 };
