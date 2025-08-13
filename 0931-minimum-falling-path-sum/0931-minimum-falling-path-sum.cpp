@@ -25,8 +25,30 @@ public:
         }
         return ans;
     }
+
+    int tabuSol(vvi& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        vvi dp(n,vi(m,0));
+        dp[0] = matrix[0];
+        for(int i = 1;i<n;i++) {
+            for(int j = 0;j<m;j++) {
+                int mini = matrix[i][j]+dp[i-1][j];
+                if(j-1>=0) mini = min(mini,matrix[i][j]+dp[i-1][j-1]);
+                if(j+1<m) mini = min(mini,matrix[i][j]+dp[i-1][j+1]);
+                dp[i][j] = mini;
+            }
+        }
+        int ans = INT_MAX;
+        for(int i = 0;i<m;i++) {
+            ans = min(ans,dp[n-1][i]);
+        }
+        return ans;
+    }
+
     int minFallingPathSum(vector<vector<int>>& matrix) {
-        return recurSol(matrix);
+        //return recurSol(matrix);
+        return tabuSol(matrix);
         
     }
 };
