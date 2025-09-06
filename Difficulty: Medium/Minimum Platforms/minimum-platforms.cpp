@@ -1,43 +1,27 @@
-
-ostream& operator << (ostream& print, vector<int>& tmp) {
-    for(auto e: tmp) {
-        print<<e<<" ";
-    }
-    return print;
-}
-
 class Solution {
   public:
-    // Function to find the minimum number of platforms required at the
-    // railway station such that no train waits.
-    int findPlatform(vector<int>& arr, vector<int>& dep) {
-        // Your code here
-        sort(arr.begin(),arr.end());
-        sort(dep.begin(),dep.end());
-        
-        //cout<<arr<<endl<<dep<<endl;
-        
-        int cnt = 0;
-        
+    int minPlatform(vector<int>& arr, vector<int>& dep) {
+        // code here
+        vector<pair<int,char>> vec;
         int n = arr.size();
-        int i = 0, j = 0;
+        for(int i = 0;i<n;i++) {
+            vec.push_back({arr[i],'a'});
+            vec.push_back({dep[i],'d'});
+        }
+        sort(vec.begin(),vec.end());
         int ans = 0;
-        
-        while(i<n) {
-            if(arr[i]<=dep[j]) {
+        int cnt = 0;
+        n+=n;
+        for(int i = 0;i<n;i++) {
+            //cout<<vec[i].second<<endl;
+            if(vec[i].second=='a') {
                 cnt++;
                 ans = max(ans,cnt);
-                i++;
             }
-           
             else {
                 cnt--;
-                j++;
             }
-           
         }
-      
         return ans;
-        
     }
 };
