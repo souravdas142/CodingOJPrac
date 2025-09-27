@@ -1,32 +1,38 @@
 
-#define vi vector<int> 
+#define vi vector<int>
 #define vvi vector<vi>
 
 class Solution {
   public:
-    int recurSolve(vvi& arr, int n,int index,int prevPicked,vvi& dp) {
-        if(index<0) {
-            return 0;
-        }
-        if(dp[index][prevPicked]!=-1) return dp[index][prevPicked];
+    int recurSol(vvi& nums, int days, int task) {
+        if(days<0) return 0;
         int maxi = INT_MIN;
-        for(int i =0;i<3;i++) {
-            if(i!=prevPicked) {
-                maxi = max(maxi,recurSolve(arr,n,index-1,i,dp)+arr[index][i]);
-            }
+        for(int i = 0;i<3;i++) {
+            if(i==task) continue;
+            int x = nums[days][i]+recurSol(nums,days-1,i);
+            maxi = max(maxi,x);
         }
-        return dp[index][prevPicked] = maxi;
-        
+        return maxi;
     }
-    int recurSol(vector<vector<int>>& arr) {
-        int n = arr.size();
-        int index = n-1;
-        int prevPicked = 3;
-       vvi dp(n,vi(4,-1)); 
-        return recurSolve(arr,n,index,prevPicked,dp);
+    
+    int memoSol(vvi& nums, int days, int task,vvi& dp) {
+        if(days<0) return 0;
+        if(dp[days][task]!=-1) return dp[days][task];
+        int maxi = INT_MIN;
+        for(int i = 0;i<3;i++) {
+            if(i==task) continue;
+            int x = nums[days][i]+memoSol(nums,days-1,i,dp);
+            maxi = max(maxi,x);
+        }
+        return dp[days][task] = maxi;
     }
+    
     int maximumPoints(vector<vector<int>>& arr) {
         // Code here
-        return recurSol(arr);
+        int days = arr.size();
+        int index = days-1;
+        // return recurSol(arr,days-1,3);
+        vvi dp(days,vi(4,-1));
+        return memoSol(arr,days-1,3,dp);
     }
 };
