@@ -1,29 +1,35 @@
 class Solution {
   public:
-    vector<int> dirx = {0,1};
-    vector<int> diry = {1,0};
-    int findPath(int m, int n, int sri, int sci,vector<vector<int>>& dp) {
-        if(sri==n-1 && sci == m-1) {
-            return 1;
-        }
+    int recurSol(int m, int n) {
         
-        int ans = 0;
-        if(dp[sri][sci]!=-1) return dp[sri][sci];
-        for(int i = 0;i<2;i++) {
-            int newx = sri+dirx[i];
-            int newy = sci+diry[i];
-            if(newx>=0 && newx<n && newy>=0 && newy<m) {
-                ans += findPath(m,n,newx,newy,dp);
-            }
-        }
+        if(m<0 || n<0) return 0;
         
-        return dp[sri][sci] = ans;
+        if(m==0 && n==0) return 1;
         
+        
+        int x = recurSol(m-1,n);
+        int y = recurSol(m,n-1);
+        return x+y;
+    }
+    int memoSol(int m, int n,vector<vector<int>>& dp) {
+        
+        
+        if(m<0 || n<0) return 0;
+        
+        if(m==0 && n==0) return dp[m][n]=1;
+        
+        if(dp[m][n]!=-1) return dp[m][n];
+        
+        
+        int x = memoSol(m-1,n,dp);
+        int y = memoSol(m,n-1,dp);
+        return dp[m][n] = x+y;
     }
     int numberOfPaths(int m, int n) {
         // Code Here
-        int sri = 0, sci = 0;
-        vector<vector<int>> dp(n,vector<int>(m,-1));
-        return findPath(m,n,sri,sci,dp);
+        // return recurSol(m-1,n-1);
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        dp[0][0] = 1;
+        return memoSol(m-1,n-1,dp);
     }
 };
