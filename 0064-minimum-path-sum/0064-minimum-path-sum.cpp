@@ -38,14 +38,37 @@ public:
         return dp[n][m] = min(x,y);
 
     }
+
+    int tabuSol(vvi& grid, int n, int m) {
+        vvi dp(n,vi(m,0));
+        dp[0][0] = grid[0][0];
+        for(int i = 1;i<m;i++) {
+            dp[0][i] = dp[0][i-1]+grid[0][i];
+            
+        }
+
+        for(int i = 1;i<n;i++) {
+            for(int j = 0;j<m;j++) {
+                int x = INT_MAX;
+                int y = INT_MAX;
+                
+                x = grid[i][j] + dp[i-1][j];
+                if(j-1>=0)
+                    y = grid[i][j] + dp[i][j-1];
+                dp[i][j] = min(x,y);
+            }
+        }
+        return dp[n-1][m-1];
+    }
     int minPathSum(vector<vector<int>>& grid) {
 
         int n = grid.size();
         int m = grid[0].size();
 
         // return recurSol(grid, n-1, m-1);
-        vvi dp(n,vi(m,-1));
-        return memoSol(grid,n-1,m-1,dp);
+        // vvi dp(n,vi(m,-1));
+        // return memoSol(grid,n-1,m-1,dp);
+        return tabuSol(grid,n,m);
         
     }
 };
