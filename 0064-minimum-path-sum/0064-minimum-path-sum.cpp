@@ -1,84 +1,31 @@
+
 #define vi vector<int>
 #define vvi vector<vi>
 
 class Solution {
 public:
-    vi dirx = {0,1};
-    vi diry = {1,0};
 
-    int dfs(vvi& grid, int r, int c,vvi& dp) {
-        int n = grid.size();
-        int m = grid[0].size();
-        
-        if(r==n-1 && c==m-1) {
-            return grid[r][c];
-        }
+    int recurSol(vvi& grid, int n, int m) {
+    
+        if(n==0 && m==0) return grid[n][m];
 
-        int ans = INT_MAX;
-        if(dp[r][c]!=-1) return dp[r][c];
-        if(c+diry[0]<m) {
-            ans = min(ans,grid[r][c]+dfs(grid,r,c+diry[0],dp));
+        int x = INT_MAX;
+        int y = INT_MAX;
 
-        }
-        if(r+dirx[1]<n) {
-            ans = min(ans,grid[r][c]+dfs(grid,r+dirx[1],c,dp));
-        }
-        return dp[r][c] = ans;
+        if(n-1>=0)
+            x = grid[n][m] + recurSol(grid,n-1,m);
+        if(m-1>=0)
+            y = grid[n][m] + recurSol(grid,n,m-1);
+
+        return min(x,y);
+
     }
-
-
-    int tabulation(vvi& grid, int r, int c, vvi& dp) {
-        dp[r][c] = grid[r][c];
-        int n = grid.size();
-        int m = grid[0].size();
-        for(int i  = 0;i<n;i++) {
-            
-            for(int j  = 0;j<m;j++) {
-                if(i==r && j==c) continue;
-                dp[i][j] = min((i-1>=0)?dp[i-1][j]+grid[i][j]:INT_MAX,(j-1>=0)?dp[i][j-1]+grid[i][j]:INT_MAX);
-            }
-        }
-        return dp[n-1][m-1];
-    }
-
-    int spaceOpt(vvi& grid, int r, int c) {
-        int n  = grid.size();
-        int m = grid[0].size();
-
-        vi dp(m,0);
-        dp[0] = grid[r][c];
-
-        for(int j = 1;j<m;j++) {
-            dp[j] = dp[j-1]+grid[0][j];
-        }
-
-        for(int i = 1;i<n;i++) {
-            vi temp(m,0);
-            int prev = 0;
-            for(int j = 0;j<m;j++) {
-
-                int cur = INT_MAX;
-                if(j==0) cur = dp[j]+grid[i][j];
-                else {
-                    cur = min(prev+grid[i][j],dp[j]+grid[i][j]);
-                }
-
-                temp[j] = cur;
-                prev = cur;
-            }
-            dp = temp;
-        }
-        return dp[m-1];
-    }
-
     int minPathSum(vector<vector<int>>& grid) {
+
         int n = grid.size();
         int m = grid[0].size();
-        // vvi dp(n,vi(m,-1));
-        // return dfs(grid,0,0,dp);
-        // vvi dp(n,vi(m,0));
-        // return tabulation(grid,0,0,dp);
-        return spaceOpt(grid,0,0);
 
+        return recurSol(grid, n-1, m-1);
+        
     }
 };
