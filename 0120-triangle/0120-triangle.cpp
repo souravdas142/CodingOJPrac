@@ -4,68 +4,63 @@
 
 class Solution {
 public:
-    int recurSolve(vvi& triangle, int n, int i, int j,vvi& dp) {
+    int recurSol(vvi& triangle, int n, int i, int j) {
+
+        if(i==n-1 || j==n-1) return triangle[i][j];
         
-        if(i>=n) {
-            return 0;
-        }
-        if(j>=triangle[i].size()) {
-            return 0;
-        }
-        if(dp[i][j]!=INT_MIN) return dp[i][j];
-        int way1 = triangle[i][j]+recurSolve(triangle,n,i+1,j,dp);
-        int way2 = triangle[i][j]+recurSolve(triangle,n,i+1,j+1,dp);
-        return dp[i][j] = min(way1,way2);
+
+        
+        int x = triangle[i][j]+recurSol(triangle,n, i+1, j);
+        int y = triangle[i][j]+recurSol(triangle,n,i+1,j+1);
+        
+        return min(x,y);
     }
-    int recurSol(vvi& triangle) {
-        int n = triangle.size();
+
+    int memoSol(vvi& triangle, int n, int i, int j, vvi& dp) {
+
+        if(i==n-1 || j==n-1) return dp[i][j] = triangle[i][j];
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        
+        int x = triangle[i][j]+memoSol(triangle,n, i+1, j,dp);
+        int y = triangle[i][j]+memoSol(triangle,n,i+1,j+1,dp);
+        
+        return dp[i][j] = min(x,y);
+    }
+
+
+    int tabuSol(vvi& triangle, int n) {
         int m = triangle[n-1].size();
-        vvi dp(triangle);
-        for(auto &row: dp) {
-            fill(row.begin(),row.end(),INT_MIN);
-        }
+
+        vvi dp(n,vi(m,0));
         
-        return recurSolve(triangle,n,0,0,dp);
-    }
+        for(int i = 0;i<m;i++) {
+            dp[n-1][i] = triangle[n-1][i];
+        }
 
+        for(int i = n-2;i>=0;i--) {
+            int k = triangle[i].size();
 
-    int tabulation(vvi& triangle) {
-        int n = triangle.size();
-        vvi dp(triangle);
-        for(auto &row : dp) fill(row.begin(),row.end(),0);
+            for(int j = 0;j<k;j++) {
+                int x = triangle[i][j]+dp[i+1][j];
+                int y = triangle[i][j]+dp[i+1][j+1];
 
-        dp[0][0] = triangle[0][0];
-
-        for(int i = 1;i<n;i++) {
-            int m = triangle[i].size();
-            for(int j = 0;j<m;j++) {
-                
-                
-                int cur = INT_MAX;
-                if(j-1>=0)  cur = dp[i-1][j-1]+triangle[i][j];
-                
-                if(j!=i) cur = min(cur,dp[i-1][j]+triangle[i][j]);
-
-                dp[i][j] = cur;
-                
-               
+                dp[i][j] = min(x,y);
             }
         }
 
-        int ans = INT_MAX;
-
-        for(int i =0;i<dp[n-1].size();i++) {
-            ans = min(ans,dp[n-1][i]);
-        }
-
-        return ans;
+        return dp[0][0];
 
     }
 
     int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        int m = triangle[n-1].size();
+        vvi dp(n,vi(m,-1));
 
-        //return recurSol(triangle);
-        return tabulation(triangle);
-        
+        // return recurSol(triangle,n,0,0);
+        // return memoSol(triangle,n,0,0,dp);
+        return tabuSol(triangle,n);
     }
 };
