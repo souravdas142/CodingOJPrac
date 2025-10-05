@@ -3,26 +3,48 @@
 
 class Solution {
 public:
-    int recurSolve(const vvi& matrix, int i, int j, int n, int m, vvi& dp) {
-        if (i == n - 1) return matrix[i][j];  // Base case: last row
-        if (dp[i][j] != INT_MAX) return dp[i][j];  // Already computed
+    int recurSol(vvi& matrix, int n, int row, int col) {
+        if(row==0 && col>=0 && col<n) return matrix[row][col];
+        if(row<0 || col<0 || col>=n) return INT_MAX;
 
-        int minPath = recurSolve(matrix, i + 1, j, n, m, dp);  // Down
-        if (j > 0) minPath = min(minPath, recurSolve(matrix, i + 1, j - 1, n, m, dp));  // Down-left
-        if (j < m - 1) minPath = min(minPath, recurSolve(matrix, i + 1, j + 1, n, m, dp));  // Down-right
+        int x = recurSol(matrix,n,row-1,col);
+        int y = recurSol(matrix,n,row-1,col-1);
+        int z = recurSol(matrix,n,row-1,col+1);
 
-        return dp[i][j] = minPath + matrix[i][j];
+        int ans = min(x,min(y,z));
+
+        return (matrix[row][col]+ans);
     }
+    int memoSol(vvi& matrix, int n, int row, int col,vvi& dp) {
+        if(row==0 && col>=0 && col<n) return matrix[row][col];
+        if(row<0 || col<0 || col>=n) return INT_MAX;
 
-    int minFallingPathSum(vvi& matrix) {
+        if(dp[row][col]!=INT_MAX) return dp[row][col];
+
+        int x = memoSol(matrix,n,row-1,col,dp);
+        int y = memoSol(matrix,n,row-1,col-1,dp);
+        int z = memoSol(matrix,n,row-1,col+1,dp);
+
+        int ans = min(x,min(y,z));
+
+        return dp[row][col] = (matrix[row][col]+ans);
+    }
+    int minFallingPathSum(vector<vector<int>>& matrix) {
         int n = matrix.size();
-        int m = matrix[0].size();
-        vvi dp(n, vi(m, INT_MAX));  // Initialize with INT_MAX to track uncomputed states
-
+        int row = n-1;
+        int col = n-1;
         int ans = INT_MAX;
-        for (int j = 0; j < m; ++j) {
-            ans = min(ans, recurSolve(matrix, 0, j, n, m, dp));
-        }
+
+        // for(int i = 0;i<n;i++) {
+        //     ans = min(ans,recurSol(matrix, n, row, col-i));
+        // }
+
+        vvi dp(n,vi(n,INT_MAX));
+
+        for(int i = 0;i<n;i++) {
+            ans = min(ans,memoSol(matrix, n, row, col-i,dp));
+        }  
+
         return ans;
     }
 };
