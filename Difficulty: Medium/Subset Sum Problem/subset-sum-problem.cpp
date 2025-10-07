@@ -1,28 +1,42 @@
-#define vi vector<int>
-#define vvi vector<vi>
-
 class Solution {
   public:
-    bool recurSolve(vector<int>& arr, int& n, int index, int target,vvi& dp) {
-        if(target==0) return true;
-        if(index>=n) return false;
-        if(dp[index][target]!=-1) return dp[index][target];
-        bool not_take = recurSolve(arr,n,index+1,target,dp);
-        if(not_take) return true;
-        bool take = false;
-        if(arr[index]<=target) {
-            take = recurSolve(arr,n,index+1,target-arr[index],dp);
-            if(take==true) return true;
+    bool recurSol(vector<int>& arr, int i, int sum) {
+        if(sum==0) return true;
+        
+        if(i<0) return false;
+        
+        bool x = recurSol(arr,i-1,sum);
+        if(x==true) return true;
+        
+        if(arr[i]<=sum) {
+            bool y = recurSol(arr,i-1,sum-arr[i]);
+            if(y==true) return true;
         }
-            
-        return dp[index][target] = not_take || take;
-        
-        
+        return false;
     }
+    
+    bool memoSol(vector<int>& arr, int i, int sum,vector<vector<int>>& dp) {
+        if(sum==0) return dp[i][sum] = true;
+        
+        if(i==0) return dp[i][sum] = sum==arr[i];
+        
+        if(dp[i][sum]!=-1) return dp[i][sum];
+        
+        bool x = memoSol(arr,i-1,sum,dp);
+        if(x==true) return dp[i][sum] = true;
+        bool y = false;
+        if(arr[i]<=sum) {
+            y = memoSol(arr,i-1,sum-arr[i],dp);
+            if(y==true) return dp[i][sum] = true;
+        }
+        return dp[i][sum] = x  || y;
+    }
+    
     bool isSubsetSum(vector<int>& arr, int sum) {
         // code here
         int n = arr.size();
-        vvi dp(n,vi(sum+1,-1));
-        return recurSolve(arr,n,0,sum,dp);
+        // return recurSol(arr,n-1,sum);
+        vector<vector<int>> dp(n,vector<int>(sum+1,-1));
+        return memoSol(arr,n-1,sum,dp);
     }
 };
