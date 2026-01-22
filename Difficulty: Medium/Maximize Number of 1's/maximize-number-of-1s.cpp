@@ -12,12 +12,13 @@ class Solution {
         while(j<n) {
             if(arr[j]==0) cnt++;
             
-            while(cnt>k) {
+            if(cnt>k) {
                 if(arr[i]==0) cnt--;
                 i++;
             }
             
-            ans = max(ans,j-i+1);
+            if(cnt<=k)
+                ans = max(ans,j-i+1);
             
             j++;
         }
