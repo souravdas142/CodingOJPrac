@@ -1,33 +1,32 @@
+#define debug(x) cout<<#x<<" = "<<x<<endl;
+
 class Solution {
 public:
-    void nextPermutation(vector<int>& nums) {
+    void nextPermutation(vector<int>& arr) {
+        int n = arr.size();
+        int dip = 0;
+        int i = n-1;
 
-        int n = nums.size();
-        if(n==1) return;
-        int j = n-1;
-        int dip = j-1;
-        while(j>0) {
-            if(nums[dip]<nums[j]) break;
-            dip--;
-            j--;
-        }
-
-        if(dip == -1) {
-            reverse(nums.begin(),nums.end());
-            return;
-        }
-
-        j = n-1;
-        while(j>dip) {
-
-            if(nums[j]>nums[dip]) {
-                swap(nums[j],nums[dip]);
-                reverse(nums.begin()+dip+1,nums.end());
-                return;
+        while(i>0) {
+            if(arr[i]>arr[i-1]) {
+                dip = i-1;
+                break;
             }
-
-            j--;
+            i--;
         }
-        
+
+        //debug(dip);
+
+        i = n-1;
+
+        while(dip>0 && i>dip) {
+            if(arr[i]>arr[dip]) {
+                swap(arr[i],arr[dip]);
+                break;
+            }
+            i--;
+        }
+        if(dip==0) reverse(arr.begin(),arr.end());
+        else reverse(arr.begin()+dip+1,arr.end());
     }
 };
