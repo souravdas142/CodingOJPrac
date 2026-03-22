@@ -1,45 +1,39 @@
-#define vvi vector<vector<int> > 
-#define vi vector<int>
-#define si set<vi> 
-
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        int sz = nums.size();
-        int target = 0;
+        int n = nums.size();
         sort(nums.begin(),nums.end());
-        vvi ans;
-        // lets set the first pointer
-        // but first lets set traversing method
-        int j = 0;
-        while(j<sz) {
-
-            /// lets set the second pointer to j+1
-            int i = j+1;
-            /// lets set the 3rd pointer to the last
-            int k = sz-1;
-            while(i<k) {
-                int get = nums[j]+nums[i]+nums[k];
-                if(get == target) {
-                    ans.push_back(vector<int>({nums[i],nums[j],nums[k]}));
-                    i++;k--;
-                    
-                    while(i<k && nums[i-1]==nums[i]) i++;
-                    while(i<k && nums[k+1]==nums[k]) k--;
-                }
-                else if(get>target) {
+        int i = 0;
+        int target  = 0;
+        vector<vector<int>> ans;
+        while(i<n) {
+            int j = i+1;
+            int k = n-1;
+            int need = target-nums[i];
+            
+            while(j<k) {
+                if(need == nums[j]+nums[k]) {
+                    ans.push_back({nums[i],nums[j],nums[k]});
+                    j++;
                     k--;
-                    while(i<k && nums[k+1]==nums[k]) k--;
+                    while(k>j && nums[k]==nums[k+1]) k--;
+                    while(j<k && nums[j]==nums[j-1]) j++;
+
+
                 }
-                else if(get<target){
-                    i++;
-                    while(i<k && nums[i-1]==nums[i]) i++;
+                else if(nums[j]+nums[k] > need) {
+                    k--;
+                    while(k>j && nums[k]==nums[k+1]) k--;
+                }
+                else if(nums[j]+nums[k] < need) {
+                    j++;
+                    while(j<k && nums[j]==nums[j-1]) j++;
                 }
             }
 
-            j++;
-            while(j<sz && nums[j-1]==nums[j]) j++;
 
+            i++;
+            while(i<n && nums[i]==nums[i-1]) i++;
         }
 
         return ans;
