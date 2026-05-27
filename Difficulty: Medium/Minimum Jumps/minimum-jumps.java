@@ -2,35 +2,36 @@ class Solution {
     public int minJumps(int[] arr) {
         // code here
         int n = arr.length;
-        if(arr[0]==0) return -1;
-        
+        int i = 0;
         int l = 1;
-        int r = arr[0];
-        int ans = 1;
-    
-        if(r>=n-1) return ans;
+        int r = arr[i];
+        int steps = 1;
+        if(r>=n-1) return steps;
+        if(r==0) return -1;
         
-        while(l<n) {
+        while(r<=n) {
             
-            int maxi = 0;
-            
-           
-            while(l<=r) {
-                if(l+arr[l]>maxi) {
-                    maxi = l+arr[l];
+
+            int nextPos = l;
+            while(l<=r && l<n) {
+                if(l+arr[l]>=nextPos+arr[nextPos]) {
+                    nextPos = l;
                 }
                 l++;
             }
             
-            r = maxi;
-            
+            r = Math.max(r,nextPos+arr[nextPos]);
             if(r<l) return -1;
+            steps+=1;
+            if(r>=n-1) return steps;
             
-            if(r>=n-1) return ans+1;
-            ans+=1;
+            
+            
             
             
         }
-        return ans;
+        
+        return steps;
+        
     }
 }
