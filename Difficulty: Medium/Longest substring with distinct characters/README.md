@@ -1,4 +1,4 @@
-<h2><a href="https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1">Longest substring with distinct characters</a></h2><h3>Difficulty Level : Difficulty: Medium</h3><hr><div class="problems_problem_content__Xm_eO"><p><span style="font-size: 14pt;">You are given a string <strong>s</strong>.&nbsp;You have to find the length of the <strong>longest substring</strong> with all <strong>distinct </strong>characters.&nbsp;</span></p>
+<h2><a href="https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1">Longest substring with distinct characters</a></h2><h3>Difficulty Level : Difficulty: Medium</h3><hr><div class="problems_problem_content__Xm_eO" style="--text-color: var(--problem-text-color);"><p><span style="font-size: 14pt;">You are given a string <strong>s</strong>.&nbsp;You have to find the length of the <strong>longest substring</strong> with all <strong>distinct </strong>characters.&nbsp;</span></p>
 <p><span style="font-size: 14pt;"><strong>Examples:</strong></span></p>
 <pre><span style="font-size: 14pt;"><strong>Input: </strong>s = "geeksforgeeks"
 <strong>Output:</strong> 7
