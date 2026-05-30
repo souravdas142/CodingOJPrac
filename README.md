@@ -8,6 +8,7 @@ leetCode codeForces CodingNinjas
 | ------- | ------- |
 | [0015-3sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0015-3sum/) | Medium |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
+| [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
 ## Two Pointers
 | Problem Name | Difficulty |
@@ -26,10 +27,15 @@ leetCode codeForces CodingNinjas
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
+| [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
 ## Prefix Sum
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
+## Hash Table
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 <!---LeetCode Topics End-->
