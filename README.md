@@ -11,6 +11,7 @@ leetCode codeForces CodingNinjas
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
+| [1423-maximum-points-you-can-obtain-from-cards](https://github.com/souravdas142/CodingOJPrac/tree/main/1423-maximum-points-you-can-obtain-from-cards/) | Medium |
 ## Two Pointers
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -31,12 +32,14 @@ leetCode codeForces CodingNinjas
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
+| [1423-maximum-points-you-can-obtain-from-cards](https://github.com/souravdas142/CodingOJPrac/tree/main/1423-maximum-points-you-can-obtain-from-cards/) | Medium |
 ## Prefix Sum
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
+| [1423-maximum-points-you-can-obtain-from-cards](https://github.com/souravdas142/CodingOJPrac/tree/main/1423-maximum-points-you-can-obtain-from-cards/) | Medium |
 ## Hash Table
 | Problem Name | Difficulty |
 | ------- | ------- |
