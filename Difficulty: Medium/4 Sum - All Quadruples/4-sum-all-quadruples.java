@@ -1,61 +1,55 @@
 class Solution {
     public ArrayList<ArrayList<Integer>> fourSum(int[] arr, int target) {
         // code here
-        //Arrays.sort(arr);
-        
-        Set<ArrayList<Integer>> ans = new LinkedHashSet<>();
-        
         int n = arr.length;
+        Arrays.sort(arr);
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
         int i = 0;
+        
         while(i<n) {
+            
             int j = i+1;
             
-            
-            
-            while(j<n) {
+            while (j<n) {
                 
-                Map<Integer,Integer> look = new LinkedHashMap<>();
                 int k = j+1;
+                int l = n-1;
                 
-                while(k<n) {
+                while(l>k) {
+                    int sum = arr[i]+arr[j]+arr[k]+arr[l];
                     
-                    int sum = arr[i]+arr[j]+arr[k];
-                    int need = target - sum;
-                    if(look.containsKey(need)) {
-                        ArrayList<Integer> intmd= new ArrayList<>();
-                        intmd.add(arr[i]);
-                        intmd.add(arr[j]);
-                        intmd.add(arr[k]);
-                        intmd.add(need);
-                        Collections.sort(intmd);
-                        ans.add(intmd);
-               
+                    
+                    if(sum>target) {
+                        l--;
                     }
-                    
-                    int c = 1;
-                    if(look.containsKey(arr[k])) {
-                        c = look.get(arr[k])+c;
+                    else if(sum<target) {
+                        k++;
                     }
-                    look.put(arr[k],c);
-                    
-                    
-                    k++;
+                    else {
+                        ans.add(new ArrayList<>(Arrays.asList(arr[i],arr[j],arr[k], arr[l])));
+                        k++;
+                        while(k<l && arr[k]==arr[k-1]) k++;
+                        l--;
+                        
+                        
+                        while(l>k && arr[l]==arr[l+1]) l--;
+                    }
                     
                 }
-
-                j++;                
-
+                
+                
+                
+                j++;
+                while(j<n && arr[j]==arr[j-1]) j++;
             }
             
             
+            
+            
             i++;
+            while(i<n && arr[i]==arr[i-1]) i++;
         }
         
-        ArrayList<ArrayList<Integer>> ans2 = new ArrayList<>();
-        for(ArrayList<Integer> intmd: ans) {
-            ans2.add(intmd);
-        }
-        
-        return ans2;
+        return ans;
     }
 }
