@@ -62,7 +62,7 @@ class Solution {
         int ans = 0;
         // ans = solve(grid,x,y);
 
-        int[][] dp = new int[n][m];
+        // int[][] dp = new int[n][m];
 
         // ans = solve2(grid,x,y,dp);
         ans = solve3(grid);
