@@ -7,6 +7,7 @@ leetCode codeForces CodingNinjas
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0015-3sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0015-3sum/) | Medium |
+| [0064-minimum-path-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0064-minimum-path-sum/) | Medium |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
@@ -45,4 +46,12 @@ leetCode codeForces CodingNinjas
 | ------- | ------- |
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
+## Dynamic Programming
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0064-minimum-path-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0064-minimum-path-sum/) | Medium |
+## Matrix
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0064-minimum-path-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0064-minimum-path-sum/) | Medium |
 <!---LeetCode Topics End-->
