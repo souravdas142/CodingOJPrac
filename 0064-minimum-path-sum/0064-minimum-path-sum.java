@@ -29,6 +29,30 @@ class Solution {
         return dp[x][y] = grid[x][y]+Math.min(up,left);
     }
 
+    public int solve3(int[][] grid) {
+        int n  = grid.length;
+        int m = grid[0].length;
+
+        int[][] dp = new int[n][m];
+
+        dp[0][0] = grid[0][0];
+
+        for(int i = 0;i<n;i++) {
+            for(int j = 0;j<m;j++) {
+                if(i==0 && j==0) continue;
+
+                int left = (j-1<0)?Integer.MAX_VALUE:dp[i][j-1];
+                int up = (i-1<0)?Integer.MAX_VALUE:dp[i-1][j];
+
+                dp[i][j] = grid[i][j]+Math.min(left,up);
+
+            }
+        }
+
+        return dp[n-1][m-1];
+
+    }
+
     public int minPathSum(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
@@ -40,7 +64,8 @@ class Solution {
 
         int[][] dp = new int[n][m];
 
-        ans = solve2(grid,x,y,dp);
+        // ans = solve2(grid,x,y,dp);
+        ans = solve3(grid);
         return ans;
     }
 }
