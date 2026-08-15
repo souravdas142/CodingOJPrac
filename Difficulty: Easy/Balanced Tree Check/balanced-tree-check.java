@@ -1,5 +1,4 @@
-/*
-Definition for Node
+/* Structure of binary tree node
 class Node {
     int data;
     Node left, right;
@@ -9,23 +8,26 @@ class Node {
         data = d;
         left = right = null;
     }
-}
-*/
+}*/
 
 class Solution {
-    public int solve(Node root) {
-        if(root==null) return -1;
+    private int solve(Node root) {
+        if(root==null) return 0;
         int left = solve(root.left);
-        if(left==-5) return -5;
+        if(left == Integer.MIN_VALUE) return left;
         int right = solve(root.right);
-        if(right==-5) return -5;
-        if(Math.abs(left-right)>1) return -5;
+        if(right == Integer.MIN_VALUE) return right;
         
-        return Math.max(left,right)+1;
+        if(Math.abs(left-right)>1) return Integer.MIN_VALUE;
+        
+        return 1+Math.max(left,right);
     }
     public boolean isBalanced(Node root) {
         // code here
-        if(solve(root)==-5) return false;
-        return true;
+        
+        int ans = solve(root);
+        if(ans!=Integer.MIN_VALUE) return true;
+        return false;
+        
     }
 }
