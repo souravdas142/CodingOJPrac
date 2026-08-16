@@ -13,25 +13,17 @@ class Node {
 
 class Solution {
     
-    private Node lcaSolve(Node root, int n1, int n2) {
-        if(root==null) return null;
+    private Node lcaSolve(Node root, int a, int b) {
+        if(root== null) return root;
         
-        if(root.data==n1 || root.data==n2) {
-            return root;
-        }
+        if(root.data==a || root.data==b) return root;
         
-        Node left = lcaSolve(root.left,n1,n2);
-        Node right = lcaSolve(root.right,n1,n2);
+        Node left = lcaSolve(root.left, a, b);
+        Node right = lcaSolve(root.right,a,b);
         
-        if((left!=null && (left.data==n1 || left.data==n2) ) &&
-            (right!=null && (right.data==n1 || right.data == n2))) {
-            return root;
-        }
-        else if(left!=null && (left.data == n1 || left.data==n2)) {
-            return left;
-        }
-        else if(right!=null && (right.data==n1 || right.data==n2)) {
-            return right;
+        if((left!=null && (left.data==a || left.data==b)) &&
+            (right!=null && (right.data ==a || right.data==b))) {
+                return root;
         }
         
         if(left==null) return right;
