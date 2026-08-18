@@ -9,6 +9,7 @@ leetCode codeForces CodingNinjas
 | [0015-3sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0015-3sum/) | Medium |
 | [0064-minimum-path-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0064-minimum-path-sum/) | Medium |
 | [0209-minimum-size-subarray-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0209-minimum-size-subarray-sum/) | Medium |
+| [0733-flood-fill](https://github.com/souravdas142/CodingOJPrac/tree/main/0733-flood-fill/) | Easy |
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
 | [1004-max-consecutive-ones-iii](https://github.com/souravdas142/CodingOJPrac/tree/main/1004-max-consecutive-ones-iii/) | Medium |
@@ -54,4 +55,13 @@ leetCode codeForces CodingNinjas
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0064-minimum-path-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0064-minimum-path-sum/) | Medium |
+| [0733-flood-fill](https://github.com/souravdas142/CodingOJPrac/tree/main/0733-flood-fill/) | Easy |
+## Depth-First Search
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0733-flood-fill](https://github.com/souravdas142/CodingOJPrac/tree/main/0733-flood-fill/) | Easy |
+## Breadth-First Search
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0733-flood-fill](https://github.com/souravdas142/CodingOJPrac/tree/main/0733-flood-fill/) | Easy |
 <!---LeetCode Topics End-->
