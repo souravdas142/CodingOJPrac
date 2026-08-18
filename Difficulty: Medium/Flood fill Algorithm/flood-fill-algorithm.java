@@ -1,51 +1,91 @@
+// class Solution {
+//     public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+//         // code here
+        
+//     }
+// }
+
+
+
 class Solution {
-    
-    
-    public void bfs(int[][] image, int sr, int sc, boolean[][] visited, int oldColor, int newColor ) {
-        
-        int[] dx = {1,0,0,-1};
-        int[] dy = {0,-1,1,0};
-        
+    int[] dx = {0,1,0,-1};
+    int[] dy = {1,0,-1,0};
+
+    public static class Pair <T,P> {
+        private T first;
+        private P second;
+        private Pair(T first, P second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public T first() {
+            return this.first;
+        }
+
+        public void first(T first) {
+            this.first = first;
+        }
+
+        public P second() {
+            return this.second;
+        }
+
+        public void second(P second) {
+            this.second = second;
+        }
+
+        public static <T,P> Pair<T,P> makePair(T first, P second) {
+            return new Pair<>(first,second);
+        }
+    }
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+
         int n = image.length;
         int m = image[0].length;
-        
+
+        boolean[][] visited = new boolean[n][m];
+
+        // for(int i = 0;i<n;i++) {
+        //     for(int j = 0;j<m;j++) {
+        //         if(image[i][j]==color || image[i][j]!=image[sr][sc]) {
+        //             visited[i][j] = true;
+        //         }
+        //     }
+        // }
+
+
+        int oldC = image[sr][sc];
+
+        Deque<Pair<Integer,Integer>> deque = new ArrayDeque<>();
+
+
+        deque.add(Pair.makePair(sr,sc));
         visited[sr][sc] = true;
-        image[sr][sc] = newColor;
-        Deque<int[]> que = new ArrayDeque<>();
-        que.add(new int[]{sr,sc});
-        
-        while(que.isEmpty()!=true) {
-            int[] node = que.poll();
-            int ur = node[0];
-            int uc = node[1];
+
+
+
+        while(deque.isEmpty()==false) {
+
+            Pair<Integer,Integer> pr = deque.poll();
+
             for(int i = 0;i<4;i++) {
-                int vr = ur+dx[i];
-                int vc = uc+dy[i];
-                if(vr>=0 && vr<n && vc>=0 && vc<m && visited[vr][vc] == false && image[vr][vc]==oldColor)  {
-                    visited[vr][vc] = true;
-                    que.add(new int[]{vr,vc});
-                    image[vr][vc] = newColor;
-                    
+                int nx = pr.first()+dx[i];
+                int ny = pr.second()+dy[i];
+
+                if(nx>=0 && ny>=0 && nx<n && ny<m && visited[nx][ny]==false && image[nx][ny]==oldC) {
+                    visited[nx][ny] = true;
+                    deque.add(Pair.makePair(nx,ny));
+                    image[nx][ny]= color;
+
                 }
             }
         }
-        
-        
-    }
-    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
-        // code here
-        int n = image.length;
-        int m = image[0].length;
-        
-        
-        boolean[][] visited = new boolean[n][m];
-        
-        int oldColor = image[sr][sc];
-        
-        bfs(image,sr,sc,visited,oldColor,newColor);
-        
+
+        image[sr][sc] = color;
+
         return image;
-        
-        
+
     }
 }
