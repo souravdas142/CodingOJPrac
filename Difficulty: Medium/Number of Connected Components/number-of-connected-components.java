@@ -1,54 +1,59 @@
 class Solution {
     
-    public void bfs(ArrayList<ArrayList<Integer>> adjlist, int s, int e, boolean[] visited) {
+    private void bfs(ArrayList<ArrayList<Integer>> adjlist,boolean[] visited,  int start) {
         
-        visited[s] = true;
-        Queue<Integer> que = new ArrayDeque<>();
-        que.add(s);
+        Deque<Integer> dq = new ArrayDeque<>();
         
-        while(que.isEmpty()!=true) {
-            
-            int u = que.poll();
-            for(int v: adjlist.get(u)) {
+        dq.add(start);
+        visited[start] = true;
+        
+        while(dq.isEmpty()==false) {
+            int u = dq.poll();
+            for(Integer v: adjlist.get(u)) {
                 
                 if(visited[v]==false) {
                     visited[v] = true;
-                    que.add(v);
+                    
+                    dq.add(v);
                 }
             }
-            
         }
         
-        
-    } 
+    }
+    
     
     int countConnected(int V, ArrayList<ArrayList<Integer>> edges) {
         // code here
         ArrayList<ArrayList<Integer>> adjlist = new ArrayList<>();
-        for(int i = 0;i<V;i++) {
-            adjlist.add(new ArrayList<Integer>());
-        }
-        
-        int e = edges.size();
-        for(int i = 0;i<e;i++) {
-            adjlist.get(edges.get(i).get(0)).add(edges.get(i).get(1));
-            adjlist.get(edges.get(i).get(1)).add(edges.get(i).get(0));
-        }
-        
-        
         boolean[] visited = new boolean[V];
         
+        for(int i = 0;i<V;i++) adjlist.add(new ArrayList<Integer>());
+        
+        int n = edges.size();
+        for(int i = 0;i<n;i++) {
+            
+            int u = edges.get(i).get(0);
+            int v = edges.get(i).get(1);
+        
+            adjlist.get(u).add(v);
+            adjlist.get(v).add(u);
+        }
+        
         int ans = 0;
+        
+        
+        
+        // System.out.println(adjlist);
         
         for(int i = 0;i<V;i++) {
             if(visited[i]==false) {
                 ans++;
-                bfs(adjlist,i,e,visited);
+                bfs(adjlist,visited,i);
             }
+            // for(int j = 0;j<V;j++) {
+            // System.out.println(visited[j]);
+            // }
         }
-        
-        
         return ans;
-        
     }
 }
