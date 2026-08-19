@@ -1,54 +1,76 @@
-class Solution {
-    
-    public boolean bfs(ArrayList<ArrayList<Integer>> adj, boolean[] visited, int src) {
+
+@FunctionalInterface
+interface Strategy {
+    boolean traverse(ArrayList<ArrayList<Integer>> adjlist, boolean[] visited,int start);
+}
+
+class BfsTraversal implements Strategy {
+    @Override
+    public boolean traverse(ArrayList<ArrayList<Integer>> adjlist, boolean[] visited, int start) {
         
-        Deque<int[]> que = new ArrayDeque<>();
+        int n = visited.length;
         
-        que.add(new int[]{src,-1});
+        Deque<int[]> deq = new ArrayDeque<>();
         
-        visited[src] = true;
+        deq.add(new int[]{start,-1});
+        visited[start] = true;
         
-        while(que.isEmpty()!=true) {
-            int[] node = que.poll();
-            int parent = node[1];
-            int cur = node[0];
+        while(deq.isEmpty()==false) {
+            int[] uu = deq.poll();
+            int u = uu[0];
+            int p = uu[1];
             
-            for(int child: adj.get(cur)) {
-                if(visited[child]==false) {
-                    visited[child] = true;
-                    que.add(new int[]{child,cur});
+            for(Integer v: adjlist.get(u)) {
+                if(visited[v]==false) {
+                    visited[v] = true;
+                    deq.add(new int[]{v,u});
                 }
-                else if(visited[child] == true && child!=parent) {
-                    return true;   
+                else if(visited[v]==true && p!=v) {
+                    return true;
                 }
             }
-            
         }
         
         return false;
         
     }
+}
+
+class DfsTraversal implements Strategy {
+    @Override
+    public boolean traverse(ArrayList<ArrayList<Integer>> adjlist, boolean[] visited, int u) {
+        return false;
+    }
+}
+
+class Solution {
     public boolean isCycle(int V, int[][] edges) {
-        // Code here
-        int e = edges.length;
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for(int i = 0;i<V;i++) adj.add(new ArrayList<>());
-        for(int i = 0;i<e;i++) {
-            adj.get(edges[i][0]).add(edges[i][1]);
-            adj.get(edges[i][1]).add(edges[i][0]);
+        // Code hereli
+        
+        ArrayList<ArrayList<Integer>> adjlist = new ArrayList<>();
+        int n = edges.length;
+        
+        for(int i = 0;i<V;i++) adjlist.add(new ArrayList<Integer>());
+        
+        for(int i = 0;i<n;i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adjlist.get(u).add(v);
+            adjlist.get(v).add(u);
         }
+        
         boolean[] visited = new boolean[V];
         
+        Strategy strategy = new BfsTraversal();
         
         for(int i = 0;i<V;i++) {
-            if(visited[i]==false) {
-                boolean ans = bfs(adj,visited,i);
-                if(ans==true) return true;
+            if(visited[i] ==false) {
+                boolean status = strategy.traverse(adjlist,visited,i);
+                
+                if(status == true) return true;
             }
         }
         
         return false;
-        
-
     }
 }
