@@ -1,59 +1,50 @@
 class Solution {
-    
-    
-    public void bfs(int[][] grid, Deque<int[]> queue, boolean[][] visited, ArrayList<ArrayList<Integer>> gridAns) {
-        int[] dx = {0,1,-1,0};
-        int[] dy = {1,0,0,-1};
-        
-        int n = grid.length;
-        int m = grid[0].length;
-        
-        while(queue.isEmpty()!=true) {
-            int[] node = queue.poll();
-            
-            for(int i=0;i<4;i++) {
-                int x = node[0]+dx[i];
-                int y = node[1]+dy[i];
-                if(x>=0 && x<n && y>=0 && y<m && visited[x][y]==false && grid[x][y] == 0) {
-                    visited[x][y] = true;
-                    int d = Math.abs(x-node[0])+Math.abs(y-node[1])+node[2];
-                    gridAns.get(x).set(y,d);
-                    queue.add(new int[]{x,y,d});
-                }
-            }
-            
-        }
-        
-        
-    }
-    
     public ArrayList<ArrayList<Integer>> nearest(int[][] grid) {
         // code here
+        int dx[] = {1,0,0,-1};
+        int dy[] = {0,1,-1,0};
+        
         int n = grid.length;
         int m = grid[0].length;
-        ArrayList<ArrayList<Integer>> gridAns = new ArrayList<>();
+        
+        boolean[][] visited = new boolean[n][m];
+        
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
         for(int i = 0;i<n;i++) {
-            ArrayList<Integer> arr = new ArrayList<>();
-            for(int j = 0;j<m;j++) arr.add(0);
-            gridAns.add(arr);
+            ArrayList<Integer> temp = new ArrayList<Integer>();
+            for(int j = 0;j<m;j++) {
+                temp.add(0);
+            }
+            ans.add(temp);
         }
         
-        Deque<int[]> queue = new ArrayDeque<>();
-        boolean[][] visited = new boolean[n][m];
+        Deque<int[]> dq = new ArrayDeque<>();
         
         for(int i = 0;i<n;i++) {
             for(int j = 0;j<m;j++) {
-                if(grid[i][j] == 1) {
-                    queue.add(new int[]{i,j,0});
-                    
+                if(grid[i][j]==1) {
+                    dq.add(new int[]{i,j,0});
                     visited[i][j] = true;
                 }
             }
         }
         
-        bfs(grid,queue,visited,gridAns);
+        while(dq.isEmpty()==false) {
+            int[] uu = dq.poll();
+            
+            for(int i = 0;i<4;i++) {
+                int nx = uu[0]+dx[i];
+                int ny = uu[1]+dy[i];
+                
+                if(nx>=0 && nx<n && ny>=0 && ny<m && visited[nx][ny]==false && grid[nx][ny]==0) {
+                    dq.add(new int[]{nx,ny,uu[2]+1});
+                    visited[nx][ny] = true;
+                    ans.get(nx).set(ny,uu[2]+1);
+                }
+            }
+        }
         
-        return gridAns;
+        return ans;
         
     }
 }
