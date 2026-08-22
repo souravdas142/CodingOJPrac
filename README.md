@@ -45,6 +45,7 @@ leetCode codeForces CodingNinjas
 ## Hash Table
 | Problem Name | Difficulty |
 | ------- | ------- |
+| [0127-word-ladder](https://github.com/souravdas142/CodingOJPrac/tree/main/0127-word-ladder/) | Hard |
 | [0904-fruit-into-baskets](https://github.com/souravdas142/CodingOJPrac/tree/main/0904-fruit-into-baskets/) | Medium |
 | [0930-binary-subarrays-with-sum](https://github.com/souravdas142/CodingOJPrac/tree/main/0930-binary-subarrays-with-sum/) | Medium |
 ## Dynamic Programming
@@ -63,5 +64,14 @@ leetCode codeForces CodingNinjas
 ## Breadth-First Search
 | Problem Name | Difficulty |
 | ------- | ------- |
+| [0127-word-ladder](https://github.com/souravdas142/CodingOJPrac/tree/main/0127-word-ladder/) | Hard |
 | [0733-flood-fill](https://github.com/souravdas142/CodingOJPrac/tree/main/0733-flood-fill/) | Easy |
+## String
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0127-word-ladder](https://github.com/souravdas142/CodingOJPrac/tree/main/0127-word-ladder/) | Hard |
+## Bidirectional Search
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0127-word-ladder](https://github.com/souravdas142/CodingOJPrac/tree/main/0127-word-ladder/) | Hard |
 <!---LeetCode Topics End-->
