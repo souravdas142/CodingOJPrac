@@ -10,10 +10,12 @@ class Node{
 
 class Solution {
     
-    public boolean bfs(int V, int start, ArrayList<ArrayList<Integer>> adjlist, boolean[] visited) {
+    public boolean bfs(int V, int start,
+                        ArrayList<ArrayList<Integer>> adjlist, 
+                        boolean[] visited, int[] colors) {
         Queue<Node> que = new ArrayDeque<>();
-        int[] colors = new int[V];
-        Arrays.fill(colors,-1);
+        
+        
         que.add(new Node(start,0));
         visited[start] = true;
         colors[start] = 0;
@@ -41,11 +43,33 @@ class Solution {
         
     }
     
+    public boolean dfs(int u, int p,
+                        ArrayList<ArrayList<Integer>> adjlist, 
+                        boolean[] visited, int[] colors) {
+                            
+        if(visited[u]==true) {
+            if(colors[u] == colors[p]) return false;
+            return true;
+        }
+        
+        visited[u] = true;
+        colors[u] = (p<0)?0:1-colors[p];
+        
+        for(Integer v: adjlist.get(u)) {
+            if(dfs(v,u,adjlist,visited,colors)==false) return false;
+        }
+        
+        return true;
+                            
+    }
+    
     public boolean isBipartite(int V, int[][] edges) {
         // Code here
         ArrayList<ArrayList<Integer>> adjlist = new ArrayList<>();
         int n = edges.length;
         boolean[] visited = new boolean[V];
+        int[] colors = new int[V];
+        Arrays.fill(colors,-1);
         
         for(int i = 0;i<V;i++) adjlist.add(new ArrayList<Integer>());
         
@@ -60,7 +84,8 @@ class Solution {
         
         for(int i = 0;i<V;i++) {
             if(visited[i]==false) {
-                boolean status = bfs(V,i,adjlist,visited);
+                // boolean status = bfs(V,i,adjlist,visited,colors);
+                boolean status = dfs(i,-1,adjlist,visited,colors);
                 if(status==false) return false;
             }
         }
