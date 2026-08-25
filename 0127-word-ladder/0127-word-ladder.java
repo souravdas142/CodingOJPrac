@@ -1,69 +1,45 @@
-
-class Pair {
-    public String first;
-    public int second;
-    public Pair(String s, int d) {
-        first = s;
-        second = d;
-    }
-}
-
 class Solution {
-
-
-    
-
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // Set<String> wordsmp = new HasSet<>();
+        // Set<String> visited = new HasSet<>();
+        Map<String,Integer> dist = new HashMap<>();
 
-        Set<String> words = new HashSet<>();
 
-        Set<String> visited = new HashSet<>();
+        for(String s: wordList) dist.put(s,Integer.MAX_VALUE);
+        
+        
+        if(dist.containsKey(endWord)==false) return 0;
 
-        for(String s: wordList) words.add(s);
+        Queue<String> que = new ArrayDeque<>();
+        que.add(beginWord);
+        dist.put(beginWord,1);
 
-        Queue<Pair> que = new ArrayDeque<>();
+        while(!que.isEmpty()) {
+            StringBuilder u = new StringBuilder(que.poll());
+            String ustr = u.toString();
 
-        int n = beginWord.length();
+            int sn = u.length();
+            for(int i = 0;i<sn;i++) {
+                
+                char reserv = u.charAt(i);
 
-        que.add(new Pair(beginWord,1));
-        visited.add(beginWord);
-
-        while(que.isEmpty()==false) {
-            Pair node = que.poll();
-
-            // if(node.first.toString().equals(endWord)) {
-            //     return node.second;
-            // }
-            StringBuilder bword = new StringBuilder(node.first);
-             System.out.print(bword.toString()+" -> ");
-            int dist = node.second;
-            for(int i = 0;i<n;i++ ) {
-                char res = bword.charAt(i);
-                for(char ch = 'a';ch<='z';ch++) {
-                    if(res==ch) continue;
-                    bword.setCharAt(i,ch);
-                    String bwords = bword.toString();
-                    if(words.contains(bwords)==true && visited.contains(bwords)==false) {
-
-                       
-
-                        if(bwords.equals(endWord)) {
-                            return dist+1;
+                for(char ch='a';ch<='z';ch++) {
+                    if(ch==reserv) continue;
+                    u.setCharAt(i,ch);
+                    String v = u.toString();
+                    if(dist.containsKey(v)==true && dist.get(v)==Integer.MAX_VALUE) {
+                        dist.put(v,dist.get(ustr)+1);
+                        if(v.equals(endWord)==true) {
+                            return dist.get(v);
                         }
-                        
-                        que.add(new Pair(bwords,dist+1));
-                        visited.add(bwords);
-                        
+                        que.add(v);
                     }
                 }
 
-                bword.setCharAt(i,res);
-
+                u.setCharAt(i,reserv);
             }
-
         }
 
         return 0;
-
     }
 }
