@@ -1,54 +1,62 @@
 class Solution {
     
-    public int solve(int[] arr, int tsum, int index, int sum) {
-        if(index<0) {
-            return Math.abs(tsum-(2*sum));
-        } 
+    public int solve(int[] arr, int n, int target, boolean[][] dp) {
         
-        // notTake
-        int notTake = solve(arr,tsum,index-1,sum);
-
-        int take = solve(arr,tsum,index-1,sum+arr[index]);
-
+        
+        for(int i= 0;i<n;i++) dp[i][0] = true;
+        
+      
        
-        return Math.min(take,notTake);
+       dp[0][arr[0]] = true;
         
-   
-    }
-    
-    public int solve2(int[] arr, int tsum, int index, int sum, int[][] dp) {
-        if(index<0) {
-            return Math.abs(tsum-(2*sum));
-        } 
-        
-        if(dp[index][sum]!=-1) return dp[index][sum];
-        // notTake
-        int notTake = solve2(arr,tsum,index-1,sum,dp);
-
-        int take = solve2(arr,tsum,index-1,sum+arr[index],dp);
-
        
-        return dp[index][sum] = Math.min(take,notTake);
+       for(int i = 1;i<n;i++) {
+           for(int j = 1;j<=target;j++) {
+               
+               
+                // not take
+                boolean notTake = dp[i-1][j];
+                
+                boolean take = false;
+                
+                if(j>=arr[i])
+                    take = dp[i-1][j-arr[i]];
+                    
+                dp[i][j] = (take || notTake);
+               
+               
+           }
+       }
         
-   
+       
+       return util(target,dp[n-1]);
+        
+        
+        
     }
-    
+    int util(int target,boolean[] dp) {
+        int mini =Integer.MAX_VALUE;
+        for(int i = 0;i<=target;i++) {
+            // System.out.print(dp[i]+", ");
+            if(dp[i]==true) {
+                int t2 = target-i;
+                if(2*i<=target)
+                    mini = Math.min(mini,Math.abs(i-t2));
+            }
+        }
+        return mini;
+    }
+
     public int minDifference(int arr[]) {
         // code here
         int n = arr.length;
         int sum = 0;
-        for(int i = 0;i<n;i++) sum+=arr[i];
+        for(int i = 0;i<n;i++) sum+= arr[i];
+        boolean[][] dp = new boolean[n][sum+1];
         
-        int[][] dp = new int[n+1][sum+1];
+            
         
-        for(int i = 0;i<=n;i++) {
-            Arrays.fill(dp[i],-1);
-        }
-        
-        int ans = 0;
-        int index = n-1;
-        // int ans1 = solve(arr,sum,index,ans);
-        int ans1 = solve2(arr,sum,index,ans,dp);
-        return ans1;
+        int ans = solve(arr,n,sum,dp);
+        return ans;
     }
 }
